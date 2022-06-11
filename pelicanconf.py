@@ -7,8 +7,8 @@ PLUGINS = [
   'assets'
 ]
 
-SITENAME = 'eryktr'
-SITESUBTITLE = 'Software Engineer with many passions'
+SITENAME = "Let's Research Stuff"
+SITESUBTITLE = "Witness the stream of my thoughts being compiled into a text format."
 SITEURL = ''
 SITEMAP = {
     'format': 'xml',
@@ -41,11 +41,13 @@ AUTHORS_BIO = {
   "eryktr": {
     "name": "Eryk Trzeciakiewicz",
     "cover": "https://casper.ghost.org/v1.0.0/images/team.jpg",
-    "image": "assets/images/avatar.png",
+    "image": "assets/images/avatar.jpg",
     "linkedin": "https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/",
     "github": "eryktr",
     "location": "Poland",
-    "bio": "This is the place for a small biography with max 200 characters. Well, now 100 are left. Cool, hugh?"
+    "bio": "An engineer pushing code code at work and his limits thereafter. " 
+           "Currently chasing latest technologies, learning European languages "
+           "and practicing calisthenics."
   }
 }
 
@@ -59,7 +61,8 @@ DEFAULT_PAGINATION = 10
 THEME = 'attila-1.3'
 
 ### Theme settings
-HEADER_COLOR = 'black'
+HEADER_COVER = 'assets/images/main_cover.avif'
+#HEADER_COLOR = 'black'
 
 JINJA_ENVIRONMENT = {
   'extensions' :[
