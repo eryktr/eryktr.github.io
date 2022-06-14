@@ -40,8 +40,7 @@ AUTHOR_FEED_RSS = None
 AUTHORS_BIO = {
   "eryktr": {
     "name": "Eryk Trzeciakiewicz",
-    "cover": "https://casper.ghost.org/v1.0.0/images/team.jpg",
-    "image": "assets/images/avatar.jpg",
+    "image": "assets/images/avatar.webp",
     "linkedin": "https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/",
     "github": "eryktr",
     "location": "Poland",
@@ -61,7 +60,7 @@ DEFAULT_PAGINATION = 10
 THEME = 'attila-1.3'
 
 ### Theme settings
-HEADER_COVER = 'assets/images/main_cover.avif'
+HEADER_COVER = 'assets/images/main_cover.webp'
 #HEADER_COLOR = 'black'
 
 JINJA_ENVIRONMENT = {
