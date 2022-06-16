@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Deterministic tests - introduction to monkeypatching</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="/" rel="canonical" />
+
+  <!-- Feed -->
+
+  <link href="/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="/theme/css/code_blocks/tomorrow.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+  <link href="/2022/11/monkeypatching.html" rel="canonical" />
+
+    <meta name="description" content="Some parts of your code are hard to test - API calls, randomized or long-running calculations cannot be tested effectively. Luckily,...">
+
+    <meta name="author" content="eryktr">
+
+    <meta name="tags" content="python">
+    <meta name="tags" content="pytest">
+    <meta name="tags" content="testing">
+    <meta name="tags" content="software-engineering">
+    <meta name="tags" content="programming">
+    <meta name="tags" content="unit-tests">
+
+
+
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="Let's Research Stuff"/>
+<meta property="og:title" content="Deterministic tests - introduction to monkeypatching"/>
+<meta property="og:description" content="Some parts of your code are hard to test - API calls, randomized or long-running calculations cannot be tested effectively. Luckily,..."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/2022/11/monkeypatching.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2022-11-06 00:00:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/eryktr">
+<meta property="article:section" content="Python"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="pytest"/>
+<meta property="article:tag" content="testing"/>
+<meta property="article:tag" content="software-engineering"/>
+<meta property="article:tag" content="programming"/>
+<meta property="article:tag" content="unit-tests"/>
+<meta property="og:image" content="/assets/images/main_cover.webp">
+
+<!-- Twitter Card -->
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Deterministic tests - introduction to monkeypatching",
+  "headline": "Deterministic tests - introduction to monkeypatching",
+  "datePublished": "2022-11-06 00:00:00+01:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "eryktr",
+    "url": "/author/eryktr"
+  },
+  "image": "/assets/images/main_cover.webp",
+  "url": "/2022/11/monkeypatching.html",
+  "description": "Some parts of your code are hard to test - API calls, randomized or long-running calculations cannot be tested effectively. Luckily,..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+
+              <li role="presentation"><a href="/pages/about/">About</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Deterministic tests - introduction to monkeypatching</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="/author/eryktr">Eryk Trzeciakiewicz</a>
+            | <time datetime="Sun 06 November 2022">Sun 06 November 2022</time>
+        </span>
+        <!-- TODO : Modified check -->
+            <div class="post-cover cover" style="background-image: url('/assets/images/main_cover.webp')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h1>Introduction</h1>
+<p>It's important to keep your code properly covered with unit tests. However, when working on a complex system,
+certain parts of it are harder to cover on unit level.</p>
+<p>Examples of such relucant cases include:</p>
+<ul>
+<li>API calls (Unit tests shouldn't send any requests - they need to be runnable without any external dependencies)</li>
+<li>Non deterministic functions (e.g. <em>random</em>, <em>datetime</em>)</li>
+<li>Long running calculations (Unit tests should run as quickly as possible)</li>
+<li>Operations on the file system (Reading from / writing to a file / stderr)</li>
+<li>Network operations (Reading to / writing from a socket)</li>
+<li>Interacting with the user (Logging, reading input)</li>
+</ul>
+<p>If some part of your system depends on any of the above mentioned actions - which is highly probable - you can still
+achieve full coverage. You just need to sport a trifle bit extra creativity when writing your test and make sure your toolbox 
+is complete.</p>
+<p>There are a bunch of tools to help covering such scenarios. Probably the most common one is <strong>monkeypatching</strong>.</p>
+<h1>Monkeypatching - meaning?</h1>
+<p>Let's start with a simple definition from <a href="https://en.wikipedia.org/wiki/Monkey_patch">Wikipedia</a></p>
+<blockquote>
+<p>A monkey patch is a way for a program to extend or modify supporting system software locally (affecting only the running instance of the program).</p>
+</blockquote>
+<p>In other words, when we <em>monkeypatch</em> an object (a module, a function, a class), we replace it with a different one 
+<strong>in runtime</strong>.</p>
+<p>Let's see a few possible applications that would enable unit testing:</p>
+<ul>
+<li>A function calling an external API could be replaced with a function sending no requests,
+just returning a value of the same structure as would have been returned by the original function.</li>
+<li>A long running function could be replaced with one that returns a hardcoded value immediately.</li>
+<li>Sockets and other file-like objects could be replaced with an in-memory equivalents, storing information
+about all performed reads and writes</li>
+</ul>
+<h1>Monkeypatching vs mocking</h1>
+<p>Having read the examples, a different word might spring to your mind: <strong>mocking</strong>.
+Monkeypatching and mocking are tightly related, yet they aren't the same thing. </p>
+<ul>
+<li>A mock is a <strong>simulated object</strong> that mimics the behavior of the original object in a <strong>controlled way</strong>. 
+It can replace its attributes, cause certain side effects (e.g. raise an exception) or keep track of the object's calls
+(e.g. how many times was the function called? With what arguments?)</li>
+<li>Monkeypatching is <strong>replacing</strong> one object with a different one in runtime</li>
+<li>Mocking is <strong>monkeypatching</strong> an object with a <strong>mock</strong>.</li>
+</ul>
+<p>As you see, these definitions work together, not against each other.
+Therefore, the question <em>Which is better - mocking or monkeypatching?</em>
+is like asking <em>Which is better - the car or the engine?</em>.</p>
+<h1>Example: An orc slayer</h1>
+<p>Imagine a video game you have implemented. All characters have the following statistics:</p>
+<ul>
+<li>HP (health points)</li>
+<li>Strength Points</li>
+<li>Armor points</li>
+</ul>
+<p>In addition, they yield a weapon.
+Each weapon has a range of damage it can deal.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Weapon</span><span class="p">:</span>
+    <span class="n">min_dmg</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">max_dmg</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Character</span><span class="p">:</span>
+    <span class="n">hp</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">armor</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">strength</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">weapon</span><span class="p">:</span> <span class="n">Weapon</span>
+</code></pre></div>
+
+<p>Now, let's make a few assumptions how our system works:</p>
+<ul>
+<li>The more strength a character has, the harder it hits (deals more damage)</li>
+<li>The better the weapon (damage range), the harder it hits.</li>
+<li>The more armor a character has, the less damage it takes.</li>
+</ul>
+<p>So, the algorithm to calculate the amount of damage dealt by Attacker to Target runs as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_attack_strength</span><span class="p">(</span><span class="n">attacker</span><span class="p">:</span> <span class="n">Character</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the amount of damage that would be dealt</span>
+<span class="sd">    if target had no armor.</span>
+
+<span class="sd">    Algorithm:</span>
+<span class="sd">        Return the sum of character&#39;s strength and a random value </span>
+<span class="sd">        from the range (minimal_weapon_dmg, maximal_weapon_dmg)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">min_dmg</span> <span class="o">=</span> <span class="n">attacker</span><span class="o">.</span><span class="n">weapon</span><span class="o">.</span><span class="n">min_dmg</span>
+    <span class="n">max_dmg</span> <span class="o">=</span> <span class="n">attacker</span><span class="o">.</span><span class="n">weapon</span><span class="o">.</span><span class="n">max_dmg</span>
+    <span class="k">return</span> <span class="n">attacker</span><span class="o">.</span><span class="n">strength</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">min_dmg</span><span class="p">,</span> <span class="n">max_dmg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">reduce_dmg</span><span class="p">(</span><span class="n">attack_strength</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">Character</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the net amount of damage</span>
+<span class="sd">    (the value by which target&#39;s HP will be decreased)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># At least one damage point will always be dealt</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">armor</span> <span class="o">:=</span> <span class="n">target</span><span class="o">.</span><span class="n">armor</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">attack_strength</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">attack_strength</span> <span class="o">-</span> <span class="n">armor</span>
+
+<span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="n">attacker</span><span class="p">:</span> <span class="n">Character</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="n">Character</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">attack_strength</span> <span class="o">=</span> <span class="n">calculate_attack_strength</span><span class="p">(</span><span class="n">attacker</span><span class="p">)</span>
+    <span class="n">reduced_dmg</span> <span class="o">=</span> <span class="n">reduce_dmg</span><span class="p">(</span><span class="n">attack_strength</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">hp</span> <span class="o">-=</span> <span class="n">reduced_dmg</span>
+</code></pre></div>
+
+<p>Now, take a look at line <em>12</em> - A random number from the range (minimum weapon damage, maximum weapon damage) is drawn to 
+increase the attack strength. What does it mean?
+<strong>The function <em>attack</em> is not deterministic!</strong></p>
+<p>To prove that, let's run this snippet of code a few times and log the output.</p>
+<div class="highlight"><pre><span></span><code><span class="n">rusty_sword</span> <span class="o">=</span> <span class="n">Weapon</span><span class="p">(</span><span class="n">min_dmg</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_dmg</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">large_axe</span> <span class="o">=</span> <span class="n">Weapon</span><span class="p">(</span><span class="n">min_dmg</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">max_dmg</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">knight</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">hp</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">armor</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">weapon</span><span class="o">=</span><span class="n">rusty_sword</span><span class="p">)</span>
+<span class="n">orc</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">hp</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">armor</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">weapon</span><span class="o">=</span><span class="n">rusty_sword</span><span class="p">)</span>
+
+<span class="n">attack</span><span class="p">(</span><span class="n">knight</span><span class="p">,</span> <span class="n">orc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">orc</span><span class="o">.</span><span class="n">hp</span><span class="p">)</span>
+</code></pre></div>
+
+<p>My results:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">50</span><span class="w"></span>
+<span class="mf">64</span><span class="w"></span>
+<span class="mf">52</span><span class="w"></span>
+<span class="mf">65</span><span class="w"></span>
+<span class="mf">60</span><span class="w"></span>
+<span class="mf">66</span><span class="w"></span>
+</code></pre></div>
+
+<p>How do we test this function?</p>
+<p>There are a few solutions that might come to your mind at first:</p>
+<ul>
+<li><strong>Let's assert that the target's HP has decreased</strong> - The test would pass but you are only verifying that <em>some</em> damage is applied.
+You are not testing the actual calculation.</li>
+<li><strong>Let's only test weapons with minimum_damage equal to maximum_damage</strong> - The test would work, but that's only an edge case - you need to test that anyway.</li>
+</ul>
+<h2>Solution</h2>
+<p>We will monkeypatch the <code>random.randint(a, b)</code> function to always return the mean average of its arguments.</p>
+<p>I will use the <a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html"><strong>monkeypatch</strong></a> fixture, from pytest's standard library.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_attack</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verifies that damage is correctly propagated</span>
+<span class="sd">    to target.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">fake_randint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="n">random</span><span class="p">,</span> <span class="s1">&#39;randint&#39;</span><span class="p">,</span> <span class="n">fake_randint</span><span class="p">)</span>
+    <span class="n">attacker</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span>
+        <span class="n">hp</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">armor</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">strength</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">weapon</span><span class="o">=</span><span class="n">Weapon</span><span class="p">(</span><span class="n">min_dmg</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_dmg</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span>
+        <span class="n">hp</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">armor</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">strength</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">weapon</span><span class="o">=</span><span class="n">Weapon</span><span class="p">(</span><span class="n">min_dmg</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_dmg</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">attack</span><span class="p">(</span><span class="n">attacker</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">target</span><span class="o">.</span><span class="n">hp</span> <span class="o">==</span> <span class="mi">45</span>
+</code></pre></div>
+
+<p>Since we know that our patched <strong>random.randint(10, 100)</strong> will always return <strong>(10 + 100) // 2 = 55</strong>, we are able
+to calculate expected target't HP - it should be <strong>45</strong>. 
+The test is green.</p>
+<h1>Summary</h1>
+<p>Monkeymatching stands for 'replacing an object with a different one at runtime'.
+It's commonly confused with mocking, but these two concepts are supplementary.
+Monkeypatching allows you to test otherwise non-unit-testable parts of your code.
+Can you think of any advantages of monkeypatching with traditional functions (as we did in this article)
+over mocking?</p>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Deterministic tests - introduction to monkeypatching&amp;url=/2022/11/monkeypatching.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=/2022/11/monkeypatching.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                <aside class="post-tags">
+<a href="/tag/python">python</a><a href="/tag/pytest">pytest</a><a href="/tag/testing">testing</a><a href="/tag/software-engineering">software-engineering</a><a href="/tag/programming">programming</a><a href="/tag/unit-tests">unit-tests</a>                </aside>
+
+                <div class="clear"></div>
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="/assets/images/avatar.webp" alt="Eryk Trzeciakiewicz" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="/author/eryktr">Eryk Trzeciakiewicz</a></h4>
+                            <p class="post-author-about">An engineer pushing code code at work and his limits thereafter. Currently chasing latest technologies, learning European languages and practicing calisthenics.</p>
+                            <span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/eryktr"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-linkedin"><a target="_blank" href="https://www.linkedin.com/in/https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/"><i class="ic ic-link"></i> LinkedIn</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="/theme/js/script.js"></script>
+
+</body>
+</html>

@@ -5,35 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>/</loc>
-<lastmod>2022-06-14T22:09:10-00:00</lastmod>
+<lastmod>2022-06-16T13:09:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/tags.html</loc>
-<lastmod>2022-06-14T22:09:10-00:00</lastmod>
+<lastmod>2022-06-16T13:09:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/categories.html</loc>
-<lastmod>2022-06-14T22:09:10-00:00</lastmod>
+<lastmod>2022-06-16T13:09:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/authors.html</loc>
-<lastmod>2022-06-14T22:09:10-00:00</lastmod>
+<lastmod>2022-06-16T13:09:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>/archives.html</loc>
-<lastmod>2022-06-14T22:09:10-00:00</lastmod>
+<lastmod>2022-06-16T13:09:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -46,7 +46,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>/2022/11/myarticle.html</loc>
+<loc>/2022/11/monkeypatching.html</loc>
 <lastmod>2022-11-06T00:00:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -60,7 +60,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>/tag/test</loc>
+<loc>/tag/python</loc>
+<lastmod>2022-11-06T00:00:00+01:24</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>/tag/pytest</loc>
+<lastmod>2022-11-06T00:00:00+01:24</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>/tag/testing</loc>
+<lastmod>2022-11-06T00:00:00+01:24</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>/tag/software-engineering</loc>
+<lastmod>2022-11-06T00:00:00+01:24</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>/tag/programming</loc>
+<lastmod>2022-11-06T00:00:00+01:24</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>/tag/unit-tests</loc>
 <lastmod>2022-11-06T00:00:00+01:24</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
