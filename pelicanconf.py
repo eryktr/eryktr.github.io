@@ -55,6 +55,8 @@ SOCIAL =  (
   ('github', 'https://github.com/eryktr'),
 )
 
+COLOR_SCHEME_CSS = 'tomorrow.css'
+
 DEFAULT_PAGINATION = 10
 
 THEME = 'attila-1.3'
