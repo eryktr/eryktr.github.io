@@ -1,5 +1,5 @@
 Title: Deterministic tests - introduction to monkeypatching
-Date: 11-06-2022
+Date: 06-16-2022
 Category: Python
 Tags: python, pytest, testing, software-engineering, programming, unit-tests
 Slug: monkeypatching
