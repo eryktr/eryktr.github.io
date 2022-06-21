@@ -159,6 +159,9 @@ match cmd.split():
     # 'as' keyword causes the matched value to be stored in the 'direction' variable.
     case ['go', ('up' | 'down' | 'left' | 'right') as direction]:
         print(f'going {direction}')
+    # Here we added a 'guard' (if expression), will only match strings from the list
+    case [str(direction)] if direction in ['up', 'down', 'left', 'right']:
+        print(f'going {direction}')
     # _ is the wildcard pattern - it will match anything that hasn't been matched yet.
     case _:
         print("I don't understand.") 
@@ -258,6 +261,38 @@ case ['sleep', int(t)]
 simply matches two-element lists, whose first element it the string literal `'sleep'` and the second element
 is an integer. In addition, the integer gets assigned to the variable `t`.
 
-# Plausible applications
-# Examples
+# Practical application - Event Loop
+Imagine that you created a video game. Let's focus on part of the code responsible
+for handling user events. Events that need to be handled include:
+
+* Mouse clicks (Left / Right buttons are allowed)
+* Character movements (Four basic directions)
+* The Pause event to stop the game temporarily
+* The Quit event
+
+Using Structural Pattern Matching, the code for the loop can be tremendously simplified.
+
+```python
+# custom module with types mirroring in-game events
+import events
+
+def event_loop(game):
+    while 1:
+        event = game.get_event()
+        match event:
+            case events.Click(button='L'):
+                quick_attack()
+            case events.Click(button='R'):
+                strong_attack()
+            case events.Move(direction=dir):
+                translate_character(direction)
+            case events.Pause:
+                pause()
+            case events.Quit:
+                quit_game()
+```
+
 # Summary
+Structural Pattern Matching is still a new feature, and so is not common among different codebases.
+It does, nonetheless, yield tremendous benefits when it comes to code readability and compactness.
+Can you think of any other scenarios where SPM comes in handy and unwinds a complex chain of `if` statements?
