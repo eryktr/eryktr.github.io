@@ -4,7 +4,8 @@ PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = [
   'sitemap',
   'neighbors',
-  'assets'
+  'assets',
+  'latex',
 ]
 
 SITENAME = "Let's Research Stuff"
