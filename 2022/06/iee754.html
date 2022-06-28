@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Floating point numbers in memory - the IEE754 standard</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="/" rel="canonical" />
+
+  <!-- Feed -->
+
+  <link href="/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="/theme/css/code_blocks/tomorrow.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+  <link href="/2022/06/iee754.html" rel="canonical" />
+
+    <meta name="description" content="Have you ever wondered how a floating point number like 3.14159 is internally stored in computer memory? This article explains the...">
+
+    <meta name="author" content="eryktr">
+
+    <meta name="tags" content="software-engineering">
+    <meta name="tags" content="programming">
+    <meta name="tags" content="math">
+    <meta name="tags" content="computer-science">
+
+
+
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="Let's Research Stuff"/>
+<meta property="og:title" content="Floating point numbers in memory - the IEE754 standard"/>
+<meta property="og:description" content="Have you ever wondered how a floating point number like 3.14159 is internally stored in computer memory? This article explains the..."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/2022/06/iee754.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2022-06-27 00:00:00+02:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/eryktr">
+<meta property="article:section" content="Software Engineering"/>
+<meta property="article:tag" content="software-engineering"/>
+<meta property="article:tag" content="programming"/>
+<meta property="article:tag" content="math"/>
+<meta property="article:tag" content="computer-science"/>
+<meta property="og:image" content="/assets/images/main_cover.webp">
+
+<!-- Twitter Card -->
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Floating point numbers in memory - the IEE754 standard",
+  "headline": "Floating point numbers in memory - the IEE754 standard",
+  "datePublished": "2022-06-27 00:00:00+02:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "eryktr",
+    "url": "/author/eryktr"
+  },
+  "image": "/assets/images/main_cover.webp",
+  "url": "/2022/06/iee754.html",
+  "description": "Have you ever wondered how a floating point number like 3.14159 is internally stored in computer memory? This article explains the..."
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+
+              <li role="presentation"><a href="/pages/about/">About</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Floating point numbers in memory - the IEE754 standard</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="/author/eryktr">Eryk Trzeciakiewicz</a>
+            | <time datetime="Mon 27 June 2022">Mon 27 June 2022</time>
+        </span>
+        <!-- TODO : Modified check -->
+            <div class="post-cover cover" style="background-image: url('/assets/images/main_cover.webp')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h1>Problem statement</h1>
+<p>As every engineer knows, each object that exists in memory, eventually has to be broken down into individual building blocks - bits.
+For that matter, let's focus on floating point numbers. As an example, consider a few leading digits of the <span class="math">\(\pi\)</span> number:
+</p>
+<div class="math">$$\pi \approx 3.14159$$</div>
+<p>
+How can we store a value like that in memory? 
+The most natural thing that might come to your mind would be this:</p>
+<blockquote>
+<p>Let's store the integer part and the fractional part separately as integers.</p>
+</blockquote>
+<p>This idea would, of course, work but there are a bunch of problems with this attempt that pretty much disqualify
+this approach from generic industry-level solutions where performance and space-efficiency is key.</p>
+<ol>
+<li>We would have to know the length of the fractional part in advance. We might be working with numbers like <span class="math">\(3.1\)</span> as well as with <span class="math">\(0.000012451005\)</span>
+    Where do we store the length? Do we fix the value? If so, we would be wasting space for some numbers like <span class="math">\(0.5\)</span> and might run out of it when 
+    we need more precision.</li>
+<li>Such implementation would certainly cost more memory and as a result require more CPU cycles to load or store the values. Currently, there are two main
+    implementations of floating point numbers - the <strong>float</strong> (32 bits / 4 bytes) and <strong>double</strong> (64 bits / 8 bytes).
+    We wouldn't be able to meet that with our approach.</li>
+</ol>
+<p>Keep reading to find what the industry standard is.</p>
+<h1>Recap - integers in memory</h1>
+<p>Before we tackle on the more complex problem, let's make sure we are on the same page and understand the basics. 
+Let's review the information about integers first. If you find this chapter too trivial, just go ahead and move over to the next one.</p>
+<h2>Decimal integers</h2>
+<p>Let's have a look at some decimal (base 10) and inspect how they are formed.</p>
+<div class="math">$$
+\begin{align}
+42 
+&amp;= 4 \cdot 10 + 2 \cdot 1 \\
+&amp;= 4 \cdot 10^1 + 2 \cdot 10^0
+\end{align}
+$$</div>
+<p>And a bigger one:</p>
+<div class="math">$$
+\begin{align}
+12345 
+&amp;= 1 \cdot 10,000 + 2 \cdot 1,000 + 3 \cdot 100 + 4 \cdot 10 + 5 \cdot 1 &amp;\\
+&amp;= 1 \cdot 10^4 + 2 \cdot 10^3 + 3 \cdot 10^2 + 4 \cdot 10^1 + 5 \cdot 10^0 &amp;\\
+\end{align}
+$$</div>
+<p>I think now you see where it all goes. </p>
+<blockquote>
+<p>Each decimal integer is represented as a sum of the factors of the form <span class="math">\(A \cdot 10 ^ n\)</span>, where <span class="math">\(0 \leq A \leq 9\)</span></p>
+</blockquote>
+<p>Now, let's transition to the binary system.</p>
+<h2>Binary integers</h2>
+<p>Remember what we reviewed about decimal integers in the previous chapter? The same rule applies to binary integers. With a few tweaks.</p>
+<ol>
+<li><span class="math">\(10\)</span> is no longer the base of the system - with binary integers, it's <span class="math">\(2\)</span></li>
+<li>We no longer have <span class="math">\(10\)</span> digits - we only have <span class="math">\(2\)</span> of them</li>
+</ol>
+<p>Therefore we can conclude:</p>
+<blockquote>
+<p>Each binary integer is represented as a sum of the factors of the form <span class="math">\(A \cdot 2 ^n\)</span>, where <span class="math">\(0 \leq A \leq 1\)</span></p>
+</blockquote>
+<p>Examples:</p>
+<div class="math">$$
+\begin{align}
+\color{red}1\color{green}10\color{blue}1 &amp;= \color{red}{1 \cdot 2^3} + \color{green}{1 \cdot 2^2} + 0 \cdot 2^1 + \color{blue}{1 \cdot 2^0} \\
+&amp;= \color{red}8 + \color{green}4 + 0 + \color{blue}1 = 13
+\end{align}
+$$</div>
+<p>And another one</p>
+<div class="math">$$
+\begin{align}
+10000 &amp;= 1 \cdot 2^4 + 0 \cdot 2^3 + \ldots + 0 \cdot 2^0 = 16  
+\end{align}
+$$</div>
+<h2>Signed vs unsigned integers</h2>
+<p>When writing code, you might come across two technical terms - <strong>signed integers</strong> and <strong>unsigned integers</strong>. 
+Signed integers can store both positive and negative numbers, whereas unsigned integers can only store non-negative numbers.</p>
+<h2>Integer size</h2>
+<p>Apart from being signed or unsigned, numeric types are also divided based on their size (the number of bits they take). The most common ones are <strong>8 bits</strong>, <strong>32 bits</strong> and <strong>64 bits</strong>.</p>
+<h2>Common numeric types</h2>
+<p>Putting that together, these are the most common integer data types that you can encounter:</p>
+<ul>
+<li><strong>uint8</strong> (aka <strong>byte</strong>) - unsigned integer, using 8 bits</li>
+<li><strong>int32</strong> - signed integer, using 32 bits</li>
+<li><strong>uint32</strong> - unsigned integer, using 32 bits</li>
+<li><strong>int64</strong></li>
+<li><strong>uint64</strong></li>
+</ul>
+<h2>Closer look at the byte</h2>
+<p>This is the simplest numeric type. In other words, this is an unsigned binary integer composed of eight bits.
+In other words, the binary number is eight digits long. Each of these digits can either be <span class="math">\(0\)</span> or <span class="math">\(1\)</span>. 
+The most significant bit (the leftmost one) corresponds to the value of <span class="math">\(2^7 = 128\)</span>.</p>
+<p>Sample byte:
+</p>
+<div class="math">$$
+0\color{red}100\color{green}1\color{blue}10\color{orange}1 = \color{orange}1 + \color{blue}4 + \color{green}8 +  \color{red}{64} =  77
+$$</div>
+<h3>Question: What's the lowest number a byte can store?</h3>
+<p>Of course, we set all of the bits to <span class="math">\(0\)</span> s. The answer is</p>
+<div class="math">$$
+00000000 = 0
+$$</div>
+<h3>Question: What's the largest number a byte can store?</h3>
+<p>Conversely, this time we set all of the bits to <span class="math">\(1\)</span> s. Which yields:</p>
+<div class="math">$$
+11111111 = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 = 255
+$$</div>
+<h3>Question: How do you encode your age into a byte?</h3>
+<p>Let's say you are <span class="math">\(25\)</span> years old. Let's break that number into a sum of distinct powers of two.</p>
+<div class="math">$$
+25 = 16 + 8 + 1 = 2^4 + 2^3 + 2^0
+$$</div>
+<p>So, the bits corresponding to the powers of <span class="math">\(0\)</span>, <span class="math">\(3\)</span> and <span class="math">\(4\)</span> need to be set.</p>
+<div class="math">$$
+00011001
+$$</div>
+<h2>How about <strong>uint32</strong>?</h2>
+<p>The datatypes of <strong>uint32</strong> and <strong>uint64</strong> work in exactly the same way as the byte. The only difference is the number of bits that go into the number.
+They use <strong>32</strong> and <strong>64</strong> bits respectively.</p>
+<p>For example, that's a number encoded using the <strong>uint32</strong> data type.</p>
+<div class="math">$$
+100000001 \: 00000001 \: 00000000 \: 00000001
+$$</div>
+<p>What's the value of that number?</p>
+<h3>Question: What's the largest number you can encode using a <strong>uint32</strong>?</h3>
+<p>Set all of the bits to <span class="math">\(1\)</span>. As a result, we are getting the following sum:</p>
+<div class="math">$$
+2^0 + 2^1 + 2^2 + \ldots + 2^{30} + 2^{31} = 2^{32} - 1 = 4,294,967,295
+$$</div>
+<h2>What about negative numbers?</h2>
+<p>So far, we have only covered positive integers. Now, how are values like <span class="math">\(-5\)</span> stored? 
+To simplify the reasoning, let's consider the <strong>int8</strong> type (signed, 8 bits)</p>
+<p>The first idea you might have would be:</p>
+<blockquote>
+<p>Let's store the sign as the leading bit - for example, let <span class="math">\(0\)</span> denote <span class="math">\(+\)</span> and <span class="math">\(1\)</span> denote <span class="math">\(-\)</span>.</p>
+</blockquote>
+<p>So, going back to <strong>int8</strong>, The value of <span class="math">\(5\)</span> would be stored as</p>
+<div class="math">$$
+\color{red}{0}0000101
+$$</div>
+<p>And <span class="math">\(-5\)</span> as</p>
+<div class="math">$$
+\color{red}{1}0000101
+$$</div>
+<p>Yet, this leads to a problem.</p>
+<h3>Going on with our approach, how do we store zero?</h3>
+<p><em>That's simple</em>, you might be thinking. The answer is:</p>
+<div class="math">$$
+00000000
+$$</div>
+<p>You are right. But there is one more number that works just fine.</p>
+<div class="math">$$
+100000000
+$$</div>
+<p>So, we have both <span class="math">\(0\)</span> and <span class="math">\(-0\)</span>. That's an inefficiency - we are wasting one slot. There must be a better way to approach this.</p>
+<h3>Enter: Two's complement</h3>
+<p>The industry-standard approach is called <a href="https://en.wikipedia.org/wiki/Two%27s_complement">Two's complement</a>.
+It also alters the meaning of the oldest (leftmost) bit, but does it differently.</p>
+<p>Let's say that our number consists of 8 bits. Then, the leftmost bit corresponds to the value of <span class="math">\(-2^7\)</span>.
+Let's take a look at two different numbers, one of them is a signed integer, the other one is unsigned (byte).</p>
+<h4>Unsigned</h4>
+<div class="math">$$
+\color{red}10000011 = \color{red}{2^7} + 2^1 + 2^0 = 131
+$$</div>
+<h4>Signed</h4>
+<div class="math">$$
+\color{red}10000011 = \color{red}{-2^7} + 2^1 + 2^0 = \color{red}{-128} + 2 + 1 = -125
+$$</div>
+<p>As you can see, <strong>two identical binary representations may denote two completely different numbers, based on the underlying data type</strong></p>
+<p>Of course, the same mechanic applies to other signed integers - <strong>int32</strong> and <strong>int64</strong>. The leftmost bits represents:</p>
+<ul>
+<li><span class="math">\(-2^{31}\)</span> for <em>int32</em></li>
+<li><span class="math">\(-2^{63}\)</span> for <em>int64</em></li>
+</ul>
+<h3>Question: What's the value of <span class="math">\(11111111\)</span> representing a signed integer on 8 bits?</h3>
+<p>An exercise for the reader.</p>
+<h1>Floating point numbers</h1>
+<p>Having covered integers, we can move over to something more complicated - rational numbers.
+In order to understand the rationale behind the algorithm, we need to recap the <a href="https://en.wikipedia.org/wiki/Scientific_notation">scientific notation</a> first.</p>
+<h2>Scientific notation - decimal</h2>
+<p>To put it easily, scientific notation aims to express any number in the form</p>
+<div class="math">$$
+m \cdot 10^n
+$$</div>
+<p>Where <span class="math">\(1 \lt m \lt 10\)</span> and <span class="math">\(n\)</span> is an integer.</p>
+<p>For example:</p>
+<div class="math">$$
+23456.789 = 2.3456789 \cdot 10^4
+$$</div>
+<div class="math">$$
+0.00032 = 3.2 \cdot 10^{-4}
+$$</div>
+<h2>Scientific notation - binary</h2>
+<p>The same principles of scientific notation apply to the binary system. However, for we have fewer digits, so the scientific notation will be of the form</p>
+<div class="math">$$
+m \cdot 2^n
+$$</div>
+<p>
+Where <span class="math">\(1 \lt m \lt 2 and $n\)</span> is an integer.</p>
+<blockquote>
+<p>Note: For the case of simplicity, even though we are dealing with binary numbers, I will be writing the fractional part using decimal system.
+For example, the binary encoded number <span class="math">\(1.8125\)</span>, would be <span class="math">\(1.1101\)</span>, which is hard to read.</p>
+</blockquote>
+<p>For example:</p>
+<div class="math">$$
+2.5 = 1.25 \cdot 2^1
+$$</div>
+<p>
+And</p>
+<div class="math">$$
+5.75 = 1.4375 \cdot 2^2
+$$</div>
+<h2>Floating points in memory - the algorithm</h2>
+<p>Having done a quick recap of the scientific notation, we are ready to outline the algorithm behind storing floating point numbers in memory.
+To do that, we need to efficiently store three piece of data:</p>
+<ul>
+<li>The sign</li>
+<li>The mantissa</li>
+<li>The exponent</li>
+</ul>
+<blockquote>
+<p>Whenever we are storing a floating point value, we are effectively storing the <strong>expression</strong> of the form
+<div class="math">$$
+\color{red}{\pm}1.\color{green}{\text{mantissa}}\cdot 2^{\color{blue}{\text{exponent}}}
+$$</div>
+</p>
+</blockquote>
+<p>Consider the <strong>float</strong> data type. It uses 32 bits. Every number in memory is stored in the following pattern:</p>
+<div class="math">$$
+\underbrace{\color{red}{1}}_\text{sign bit} \: 
+\overbrace{\color{blue} {10101110}}^\text{exponent - 8 bits} \:
+\underbrace{\color{green} {00001000100010000011101}}_\text{mantissa - 23 bits}
+$$</div>
+<p>This might be a trifle bit confusing - let's go through them one by one.</p>
+<h3>The sign</h3>
+<p>With floating point numbers, Two's Complement is not used (like it is with signed integers). The thing is simpler.</p>
+<ul>
+<li><span class="math">\(1\)</span> denotes negative</li>
+<li><span class="math">\(0\)</span> denotes positive</li>
+</ul>
+<h3>The mantissa</h3>
+<p>This is the most tricky part. Mantissa should be treated as the <strong>fractional expansion of the coefficient in scientific notation</strong>.
+It's more easily explained with the use of an example.</p>
+<div class="math">$$
+13.5 = 1.6875 \cdot 2^3
+$$</div>
+<p>The mantissa is the <strong>binary representation of the fractional expansion of the coefficient</strong>. In this example, it will be the binary representation of <span class="math">\(0.6875\)</span>.
+Notice that
+</p>
+<div class="math">$$
+0.6875 = \frac 1 2 + \frac 1 8 + \frac{1}{16} = 2^{-1} + 2^{-3} + 2^{-4} 
+$$</div>
+<p>
+And so the binary representation will be
+</p>
+<div class="math">$$
+0.\color{green}{1011}
+$$</div>
+<p>
+With <span class="math">\(1011\)</span> being the mantissa.</p>
+<p>Now, we also need to remember that <strong>the mantissa takes 23 bits</strong>  - we need to apply padding to the right (Why not to the left? Question to the reader.)
+So, the final mantissa is:</p>
+<div class="math">$$
+\color{green}{10110000000000000000000}
+$$</div>
+<h3>The exponent</h3>
+<p>The exponent is the <strong>unsigned binary representation of the integer to which <span class="math">\(2\)</span> is raised in scientific notation</strong></p>
+<p>As you look at the above example, you might be inclined to think the exponent would be <span class="math">\(3\)</span>, which is <span class="math">\(11\)</span> in binary.
+You would be right. There are just two problems</p>
+<ol>
+<li>Remember that we have <strong>8 bits for the exponent</strong> - we need to apply padding.</li>
+<li>Since the integer storing the exponent is unsigned, how do we handle negative exponents?</li>
+</ol>
+<p>We have <strong>8 bits</strong>. This implies that the biggest number we can store on them is <span class="math">\(255\)</span>.
+The <em>float</em> standard allows us to use exponents from the range <span class="math">\([-126, 127]\)</span>
+That means the exponent is <strong>biased by 127</strong> (shifted by <span class="math">\(127\)</span>)</p>
+<blockquote>
+<p>The exponent is biased. If you want the exponent to be <span class="math">\(3\)</span>, you need to encode it as <span class="math">\(3 + 127 = 130\)</span>. 
+If you read a float number whose exponent part is <span class="math">\(120\)</span>, you know that the actual exponent is <span class="math">\(120 - 127 = -7\)</span></p>
+</blockquote>
+<p>So, going back to our example, our exponent will be:</p>
+<ol>
+<li>Apply bias: <span class="math">\(3 + 127 = 130 = (10000010)_2\)</span></li>
+<li>The exponent needs to be <span class="math">\(8\)</span> bits long - but it already is. We don't need to apply any extra padding - we are done.</li>
+</ol>
+<h3>Put it all together</h3>
+<p>We have successfully gathered all components necessary to represent <span class="math">\(13.5 = 1.6875 \cdot 2^3\)</span> as a <strong>float</strong>.
+Let's put all together.</p>
+<ul>
+<li>sign: <span class="math">\(\color{red}0\)</span></li>
+<li>mantissa: <span class="math">\(\color{green}{10110000000000000000000}\)</span></li>
+<li>exponent: <span class="math">\(\color{blue}{10000010}\)</span></li>
+</ul>
+<p>And so the final binary number is:</p>
+<div class="math">$$
+\color{red}{0} \: \color{blue}{10000010} \: \color{green}{10110000000000000000000}
+$$</div>
+<p>Uff. That's been a long way.</p>
+<h1><strong>Double</strong> trouble</h1>
+<p>We have covered the <em>float</em> data type which is the most popular one in modern programs.
+However, the precision offered by it is often not enough. For such cases, another data type is used -
+<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 double-precision binary floating-point format</a>.
+Luckily, it works in exactly the same way as plain old float. The only difference is the size of its components.</p>
+<ul>
+<li>The sign is still <span class="math">\(1\)</span> bit, of course</li>
+<li>The exponent is now <span class="math">\(11\)</span> bits long</li>
+<li>The mantissa is huge - it has <span class="math">\(52\)</span> bits.</li>
+</ul>
+<p>Notice how much more precise the <strong>double</strong> data type is.</p>
+<h1>Summary</h1>
+<p>Hopefully, after reading this article you have a pretty good understanding of how integers and floating point numbers
+are stored in memory. That is, of course, just the tip of an iceberg. There are more topics to be covered:</p>
+<ul>
+<li>Subnormal numbers</li>
+<li>NaN values</li>
+<li>Precision limitations</li>
+</ul>
+<p>If I were to tackle all of them here, the article would transition into a book. 
+I will elaborate more on those topics in future posts.</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Floating point numbers in memory - the IEE754 standard&amp;url=/2022/06/iee754.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=/2022/06/iee754.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                <aside class="post-tags">
+<a href="/tag/software-engineering">software-engineering</a><a href="/tag/programming">programming</a><a href="/tag/math">math</a><a href="/tag/computer-science">computer-science</a>                </aside>
+
+                <div class="clear"></div>
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="/assets/images/avatar.webp" alt="Eryk Trzeciakiewicz" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="/author/eryktr">Eryk Trzeciakiewicz</a></h4>
+                            <p class="post-author-about">An engineer pushing code code at work and his limits thereafter. Currently chasing latest technologies, learning European languages and practicing calisthenics.</p>
+                            <span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/eryktr"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-linkedin"><a target="_blank" href="https://www.linkedin.com/in/https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/"><i class="ic ic-link"></i> LinkedIn</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <a class="post-nav-prev" href="/2022/06/structuralpatternmatching.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Modern Python - Structural Pattern Matching</h2>
+                            <p class="post-nav-excerpt">Bored of mundane if-else statements and sanity checks against your data format? The...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="/theme/js/script.js"></script>
+
+</body>
+</html>
