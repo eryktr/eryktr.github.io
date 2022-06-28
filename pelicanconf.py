@@ -6,6 +6,7 @@ PLUGINS = [
   'neighbors',
   'assets',
   'latex',
+  'render_math'
 ]
 
 SITENAME = "Let's Research Stuff"
