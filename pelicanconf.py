@@ -43,7 +43,7 @@ AUTHORS_BIO = {
   "eryktr": {
     "name": "Eryk Trzeciakiewicz",
     "image": "assets/images/avatar.webp",
-    "linkedin": "https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/",
+    "linkedin": "eryk-trzeciakiewicz-2a86a1182/",
     "github": "eryktr",
     "location": "Poland",
     "bio": "An engineer pushing code code at work and his limits thereafter. " 
