@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Testing parallel, non-deterministic code</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="/" rel="canonical" />
+
+  <!-- Feed -->
+
+  <link href="/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="/theme/css/code_blocks/tomorrow.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+  <link href="/2024/01/testing-parallel-programs.html" rel="canonical" />
+
+    <meta name="description" content="Hands-on practice on testing multiple processes. Also, a refresher on Calculus :)">
+
+    <meta name="author" content="eryktr">
+
+    <meta name="tags" content="python">
+    <meta name="tags" content="pytest">
+    <meta name="tags" content="testing">
+    <meta name="tags" content="software-engineering">
+    <meta name="tags" content="programming">
+    <meta name="tags" content="unit-tests">
+
+
+
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="Let's Research Stuff"/>
+<meta property="og:title" content="Testing parallel, non-deterministic code"/>
+<meta property="og:description" content="Hands-on practice on testing multiple processes. Also, a refresher on Calculus :)"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/2024/01/testing-parallel-programs.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2024-01-24 00:00:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/eryktr">
+<meta property="article:section" content="Python"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="pytest"/>
+<meta property="article:tag" content="testing"/>
+<meta property="article:tag" content="software-engineering"/>
+<meta property="article:tag" content="programming"/>
+<meta property="article:tag" content="unit-tests"/>
+<meta property="og:image" content="/assets/images/main_cover.webp">
+
+<!-- Twitter Card -->
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "name": "Testing parallel, non-deterministic code",
+  "headline": "Testing parallel, non-deterministic code",
+  "datePublished": "2024-01-24 00:00:00+01:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "eryktr",
+    "url": "/author/eryktr"
+  },
+  "image": "/assets/images/main_cover.webp",
+  "url": "/2024/01/testing-parallel-programs.html",
+  "description": "Hands-on practice on testing multiple processes. Also, a refresher on Calculus :)"
+}
+</script>
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+
+              <li role="presentation"><a href="/pages/about/">About</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Testing parallel, non-deterministic code</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="/author/eryktr">Eryk Trzeciakiewicz</a>
+            | <time datetime="Wed 24 January 2024">Wed 24 January 2024</time>
+        </span>
+        <!-- TODO : Modified check -->
+            <div class="post-cover cover" style="background-image: url('/assets/images/main_cover.webp')">
+      </div>
+    </header>
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h1>Introduction</h1>
+<p>Most developers are familiar with testing synchronous code. Techniques such as mocking and stubbing, as well as the 'pure-fabrication' principle (more on that coming later) make up a pretty robust framework for covering regular code. However, sometimes we have to deal with highly concurrent programs which are also non-deterministic. In this article, I will analyze and cover one such scenario.</p>
+<h1>Problem statement</h1>
+<p>Consider the problem of finding the definite integral of the function <code>f</code> on the closed integral <code>[a, b]</code>. Then, denote the value as S.</p>
+<div class="math">$$
+S = \int_{a}^{b} f(x) \, dx
+$$</div>
+<p>We want to implement a function with the following signature</p>
+<h1>Math recap</h1>
+<p>The definite integral of a function can be visualized as the area under the function's curve.
+Therefore, to get a numerical estimation, we only need to calculate the area below the curve and above the X axis.</p>
+<h1>Solution</h1>
+<p>We can implement the function using a <strong>Monte Carlo</strong> simulation. This is a simplified overview of the algorithm</p>
+<ol>
+<li>Enclose the function's graph in the are to be integrated in a rectangle.</li>
+<li>Specify the number of tests.</li>
+<li>In each test, we 'throw' a point in the rectangle.</li>
+<li>If the point lands below the curve, we increment the <code>hit</code> counter.</li>
+<li>Finally, we get the integral as <code>num_hit / num_tests * rect_area</code></li>
+</ol>
+<p>From programming perspective, we want to implement such function</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the definite integral of the function &#39;f&#39; on</span>
+<span class="sd">    interval [a, b] using a MonteCarlo simulation</span>
+<span class="sd">    with y = y_min being the lower and y = y_max the upper</span>
+<span class="sd">    bound of the rectangle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p>Which can then be called like this</p>
+<div class="highlight"><pre><span></span><code><span class="n">i</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>In this case, <code>i</code> would be a numerical approximation of the integral - a value close to <code>2</code>.</p>
+<h1>Synchronous implementation</h1>
+<p>Let's implement the function in a naive way, step by step</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="k">def</span> <span class="nf">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">):</span>
+    <span class="n">num_tests</span> <span class="o">=</span> <span class="mi">100_000</span>
+    <span class="n">rect_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">((</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tests</span><span class="p">))</span>
+    <span class="n">num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_under_curve</span> <span class="o">/</span> <span class="n">num_tests</span> <span class="o">*</span> <span class="n">rect_area</span>
+</code></pre></div>
+
+<p>Now, we have to come up with a reasonable value for <code>num_tests</code>.
+I have considered several possible values and benchmarked them.
+Data in the below table comes from the average of <code>100</code> runs.</p>
+<table>
+<thead>
+<tr>
+<th>num_tests</th>
+<th>average performance (ms)</th>
+<th>average error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math">\(10,000\)</span></td>
+<td><span class="math">\(20\)</span></td>
+<td><span class="math">\(2\%\)</span></td>
+</tr>
+<tr>
+<td><span class="math">\(100,000\)</span></td>
+<td><span class="math">\(60\)</span></td>
+<td><span class="math">\(1\%\)</span></td>
+</tr>
+<tr>
+<td><span class="math">\(1,000,000\)</span></td>
+<td><span class="math">\(500\)</span></td>
+<td><span class="math">\(0.1\%\)</span></td>
+</tr>
+<tr>
+<td><span class="math">\(10,000,000\)</span></td>
+<td><span class="math">\(5,000\)</span></td>
+<td><span class="math">\(0.01\%\)</span></td>
+</tr>
+<tr>
+<td><span class="math">\(50,000,000\)</span></td>
+<td><span class="math">\(30,000\)</span></td>
+<td><span class="math">\(0.001\%\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, the value of <code>50,000,000</code> tests yields accurate results, however, execution time is significant.
+We can fix that.</p>
+<h1>Parallellism kicks in</h1>
+<p>Let's use all CPU cores that our machine has. We can get this number by calling</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;</span> <span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="o">&gt;&gt;</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<span class="mi">24</span>
+</code></pre></div>
+
+<p>So, we have this code</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="k">def</span> <span class="nf">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">):</span>
+    <span class="n">num_tests</span> <span class="o">=</span> <span class="mi">50_000_000</span>
+    <span class="n">num_cpus</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+    <span class="n">tests_per_process</span> <span class="o">=</span> <span class="n">num_tests</span> <span class="o">//</span> <span class="n">num_cpus</span>
+    <span class="n">rect_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">num_cpus</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">num_under_curve_per_thread</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span>
+            <span class="n">perform_tests</span><span class="p">,</span>
+            <span class="p">[(</span><span class="n">tests_per_process</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)]</span> <span class="o">*</span> <span class="n">num_cpus</span>
+        <span class="p">)</span>
+
+    <span class="n">total_num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">num_under_curve_per_thread</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_num_under_curve</span> <span class="o">/</span> <span class="n">num_tests</span> <span class="o">*</span> <span class="n">rect_area</span>
+
+<span class="k">def</span> <span class="nf">perform_tests</span><span class="p">(</span><span class="n">num_tests</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">):</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">((</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tests</span><span class="p">))</span>
+    <span class="n">num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_under_curve</span>
+</code></pre></div>
+
+<p>And now, the code executes - on average - in 100 milliseconds.</p>
+<h1>Testing</h1>
+<p>Now, we might want to cover the code with unit tests. We encounter two problems
+that make it harder</p>
+<ol>
+<li>The code is not deterministic - several runs of the same function with the same
+parameters yield different results.</li>
+<li>The code spawns new processes and executes some code in them.</li>
+</ol>
+<p>Let's cover the problems one by one</p>
+<h2>Non-determinism</h2>
+<p>Since the Monte Carlo simulation only approximates the integral, we cannot be sure of the value it will return,
+so we cannot just easily come up with some constant <code>C</code> to satisfy assertion like</p>
+<div class="highlight"><pre><span></span><code><span class="k">assert</span> <span class="n">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span> <span class="o">==</span> <span class="n">C</span>
+</code></pre></div>
+
+<p>Why?</p>
+<p>The function uses randomly generated points for the simuation. For example, let's try calculating</p>
+<div class="math">$$
+S = \int_{0}^{1} x^2 \, dx
+$$</div>
+<p>The exact answer is </p>
+<div class="math">$$
+S = \frac{1}{3}
+$$</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+
+<span class="n">S1</span> <span class="o">=</span> <span class="n">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">S2</span> <span class="o">=</span> <span class="n">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>S1 = 0.33325338
+S2 = 0.33324428
+</code></pre></div>
+
+<p>However, we can validate the correctness of the calculation by always forcing the random generator to return the same series of numbers - this is called <code>seeding</code>.</p>
+<p>Let's have a look at this piece of code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+</code></pre></div>
+
+<p>And let's run it twice</p>
+<div class="highlight"><pre><span></span><code><span class="k">[81, 14, 3, 94, 35, 31, 28, 17, 94, 13]</span><span class="w"></span>
+<span class="k">[81, 14, 3, 94, 35, 31, 28, 17, 94, 13]</span><span class="w"></span>
+</code></pre></div>
+
+<p>As you can see, the seed forced the generator to return the same sequence of random numbers.
+Let's try doing the same with the Monte Carlo simulation</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">S1</span> <span class="o">=</span> <span class="n">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">S2</span> <span class="o">=</span> <span class="n">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>And let's check</p>
+<div class="highlight"><pre><span></span><code>S1 = 0.33346894
+S2 = 0.33283536
+</code></pre></div>
+
+<p>It did not work. Why?</p>
+<p>Because the code is <strong>parallel</strong>. We are generating the same sequence of numbers, but we might never be sure at which point certain number is generated - and on which process. The random generator just yields a sequence of numbers. Let's say we only want to generate four numbers. With our seed, they are as follows: <code>1, 2, 3, 4</code>. We want to create two points from these numbers. We might get <code>(1,2)</code> and <code>(3,4)</code> as well as <code>(1,4)</code> and <code>(2, 3)</code>. Sequence is the same, but the place at which they land - different. We need to inject a separate seed for each process.</p>
+<h2>Solution</h2>
+<p>Let's say we are running our simulation on <span class="math">\(N\)</span> processes. Then, we need a deterministic set of <span class="math">\(N\)</span> seeds.
+Of course, we could use one seed and set it for all subprocesses, but then all processes would perform the same calculations - we would be compromising on the testing of the way they cooperate towards the final solution.</p>
+<p>Let me share the updated code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="k">def</span> <span class="nf">_get_seed</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">start_seed</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">start_seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">start_seed</span> <span class="o">+</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">start_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">num_tests</span> <span class="o">=</span> <span class="mi">50_000_000</span>
+    <span class="n">num_cpus</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+    <span class="n">tests_per_process</span> <span class="o">=</span> <span class="n">num_tests</span> <span class="o">//</span> <span class="n">num_cpus</span>
+    <span class="n">rect_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">num_cpus</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">tests_per_process</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">_get_seed</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">start_seed</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cpus</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">num_under_curve_per_thread</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">perform_tests</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="n">total_num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">num_under_curve_per_thread</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_num_under_curve</span> <span class="o">/</span> <span class="n">num_tests</span> <span class="o">*</span> <span class="n">rect_area</span>
+
+<span class="k">def</span> <span class="nf">perform_tests</span><span class="p">(</span><span class="n">num_tests</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">((</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tests</span><span class="p">))</span>
+    <span class="n">num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_under_curve</span>
+</code></pre></div>
+
+<p>Now, specifying no <code>start_seed</code> will cause the function to behave as previously. However, once we specify the <code>start_seed</code>, we will be getting deterministic results.</p>
+<div class="highlight"><pre><span></span><code><span class="mf">0.33339372</span><span class="w"></span>
+<span class="mf">0.33339372</span><span class="w"></span>
+</code></pre></div>
+
+<h2>Parallellism</h2>
+<p>Old school developers would argue that unit tests should not spawn subprocesses because they are hard to debug
+and can cause events like deadlocks that can carry over into subsequent tests, causing failure of unrelated parts
+of the test suite.
+Common approaches include:</p>
+<ol>
+<li>Mocking out the <code>threading</code> module and only verifying that correct functions were called</li>
+<li>Substituting the concurrent implementation with a synchronous one for testing</li>
+</ol>
+<p>Both of these allow us to attain necessary code coverage, however, neither of them tests the actual cooperation between processes.</p>
+<p>I can suggest a different approach - let's just run the concurrent code in the unit tests, it doesn't really cause
+too much harm, as long as we understnad the problems. Let's consider the problems</p>
+<h2>Deadlocks</h2>
+<p>Parallel code can block out completely if two processes or threads are waiting on each other. However, we do not have this problem in our case as the processes are completely independent</p>
+<h2>Resource usage</h2>
+<p>Processes are heavy both on memory and CPU. We need to understand that the machine on which the unit tests are executed (the CI/CD runner, most likely) is usually way less powerful than your working station. We might cause problems like out of memory error or CPU throttling by spawning too many processes</p>
+<h2>Performance issues</h2>
+<p>As described before, the test runner is probably significantly less capable in terms of computational power than our working machine. In our case, <span class="math">\(50,000,000\)</span> monte carlo tests might be good enough for the production deployment on a machine with many CPUs, but it might be too heavy for the test runner</p>
+<h2>Solution</h2>
+<p>Let's rework the original code to get the value of <code>num_tests</code> and <code>num_cpus</code> from a function call.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_get_seed</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">start_seed</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">start_seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">start_seed</span> <span class="o">+</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">_get_num_cpus</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">_get_num_tests</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">50_000_000</span>
+
+<span class="k">def</span> <span class="nf">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">start_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">num_tests</span> <span class="o">=</span> <span class="n">_get_num_tests</span><span class="p">()</span>
+    <span class="n">num_cpus</span> <span class="o">=</span> <span class="n">_get_num_cpus</span><span class="p">()</span>
+    <span class="n">tests_per_process</span> <span class="o">=</span> <span class="n">num_tests</span> <span class="o">//</span> <span class="n">num_cpus</span>
+    <span class="n">rect_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">num_cpus</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">tests_per_process</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">_get_seed</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">start_seed</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cpus</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">num_under_curve_per_thread</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">perform_tests</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="n">total_num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">num_under_curve_per_thread</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_num_under_curve</span> <span class="o">/</span> <span class="n">num_tests</span> <span class="o">*</span> <span class="n">rect_area</span>
+
+<span class="k">def</span> <span class="nf">perform_tests</span><span class="p">(</span><span class="n">num_tests</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">((</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_tests</span><span class="p">))</span>
+    <span class="n">num_under_curve</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_under_curve</span>
+</code></pre></div>
+
+<p>Now, given that our code is already deterministic, we can run a minimal test that actually tests the complete Monte Carlo
+simulation with minimal performance overhead</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">montecarlo</span> <span class="kn">import</span> <span class="n">mc_integrate</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">stub_get_num_cpus</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">stub_get_num_tests</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">10_000</span>
+
+<span class="k">def</span> <span class="nf">test_mc_integrate</span><span class="p">(</span><span class="n">mocker</span><span class="p">):</span>
+    <span class="n">mocker</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;montecarlo._get_num_cpus&#39;</span><span class="p">,</span> <span class="n">stub_get_num_cpus</span><span class="p">)</span>
+    <span class="n">mocker</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;montecarlo._get_num_tests&#39;</span><span class="p">,</span> <span class="n">stub_get_num_tests</span><span class="p">)</span>
+    <span class="n">mc_integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">start_seed</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.3297</span>
+</code></pre></div>
+
+<p>That's it. Now, the test is blazingly fast, efficient in terms of memory usage and deterministic - it will pass all the time,
+as long as the algorithm remains in tact.</p>
+<h1>Summary</h1>
+<p>Testing of concurrent and non deterministic code is often complex and requires creativity. 
+However, taking time and coming up with a good solution will benefit you in the long run.
+Having clear and deterministic tests enable you to put higher confidence in your code and serve as a good documentation.
+Not mocking out multithreading completely ensures that your code is tested end to end.</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Testing parallel, non-deterministic code&amp;url=/2024/01/testing-parallel-programs.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=/2024/01/testing-parallel-programs.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                <aside class="post-tags">
+<a href="/tag/python">python</a><a href="/tag/pytest">pytest</a><a href="/tag/testing">testing</a><a href="/tag/software-engineering">software-engineering</a><a href="/tag/programming">programming</a><a href="/tag/unit-tests">unit-tests</a>                </aside>
+
+                <div class="clear"></div>
+
+                <aside class="post-author">
+
+
+                        <figure class="post-author-avatar">
+                            <img src="/assets/images/avatar.webp" alt="Eryk Trzeciakiewicz" />
+                        </figure>
+                    <div class="post-author-bio">
+                        <h4 class="post-author-name"><a href="/author/eryktr">Eryk Trzeciakiewicz</a></h4>
+                            <p class="post-author-about">An engineer pushing code code at work and his limits thereafter. Currently chasing latest technologies, learning European languages and practicing calisthenics.</p>
+                            <span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
+                        <!-- Social linkes in alphabet order. -->
+                            <span class="post-author-github"><a target="_blank" href="https://github.com/eryktr"><i class="ic ic-link"></i> GitHub</a></span>
+                            <span class="post-author-linkedin"><a target="_blank" href="https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/"><i class="ic ic-link"></i> LinkedIn</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </aside>
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <a class="post-nav-prev" href="/2022/06/iee754.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Integers and floating point numbers in memory - definitive intermediate guide</h2>
+                            <p class="post-nav-excerpt">Have you ever wondered how a floating point number like 3.14159 is internally stored...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+
+    <footer id="footer">
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="/theme/js/script.js"></script>
+
+</body>
+</html>
