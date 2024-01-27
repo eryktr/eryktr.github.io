@@ -7,10 +7,10 @@ Cover: http://attila.demo.arulraj.net/theme/images/about-bg.jpg
 
 
 # About me
-My name is Eryk. I'm a software engineer currently living in Poland.
-Coding has always been my biggest passion, but not the only one.
+My name is Eryk. I'm a software engineer and soluutions architect, currently living in Poland.
+Software engineering has always been my biggest passion, but not the only one.
 
-Apart from programming languages, as a huge fan of studying foreign languages, 
+Apart from building software systems, as a huge fan of studying foreign languages, 
 I'm currently working to master up my German and to get fluent in Spanish.
 
 Some time ago I got in the habit of pursuing fitness and I've reached a point of no return.

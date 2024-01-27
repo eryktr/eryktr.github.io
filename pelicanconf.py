@@ -46,9 +46,9 @@ AUTHORS_BIO = {
     "linkedin": "eryk-trzeciakiewicz-2a86a1182/",
     "github": "eryktr",
     "location": "Poland",
-    "bio": "An engineer pushing code code at work and his limits thereafter. " 
+    "bio": "Pushing code at work and my limits thereafter. " 
            "Currently chasing latest technologies, learning European languages "
-           "and practicing calisthenics."
+           "and working out."
   }
 }
 

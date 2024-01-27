@@ -16,7 +16,7 @@ $$
 S = \int_{a}^{b} f(x) \, dx
 $$
 
-We want to implement a function with the following signature
+We want to implement a function which evaluates the integral.
 
 
 # Math recap
@@ -26,7 +26,7 @@ Therefore, to get a numerical estimation, we only need to calculate the area bel
 # Solution
 We can implement the function using a **Monte Carlo** simulation. This is a simplified overview of the algorithm
 
-1. Enclose the function's graph in the are to be integrated in a rectangle.
+1. Enclose the function's graph in the area to be integrated in a rectangle.
 2. Specify the number of tests.
 3. In each test, we 'throw' a point in the rectangle.
 4. If the point lands below the curve, we increment the `hit` counter.
