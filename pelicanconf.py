@@ -57,7 +57,6 @@ SOCIAL =  (
   ('github', 'https://github.com/eryktr'),
 )
 
-GOOGLE_ANALYTICS = 'G-SRNCD0MTY0'
 
 COLOR_SCHEME_CSS = 'tomorrow.css'
 

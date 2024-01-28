@@ -7,7 +7,7 @@ Author: eryktr
 Summary: In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific nutritional targets.
 
 # Introduction
-There are a variety of tools applicable for solving optimization problems. As a firt post in the series, I will focus on integer programming.
+There are a variety of tools applicable for solving optimization problems. As a first post in the series, I will focus on integer programming.
 In this article, I will introduce the concept of integer programming and apply it to a practical problem of optimizing diet cost. I will build the mathematical model and solve it using the GLPK solver.
 
 # Integer Programming
