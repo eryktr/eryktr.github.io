@@ -6,7 +6,8 @@ PLUGINS = [
   'neighbors',
   'assets',
   'latex',
-  'render_math'
+  'render_math',
+  'seo'
 ]
 
 SITENAME = "Let's Research Stuff"
@@ -102,6 +103,7 @@ STATIC_PATHS = ['assets']
 
 JINJA_FILTERS = {'max': max}
 
+SEO_REPORT = True  # SEO report is enabled by default
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
