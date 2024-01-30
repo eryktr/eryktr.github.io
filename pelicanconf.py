@@ -11,7 +11,7 @@ PLUGINS = [
 
 SITENAME = "Let's Research Stuff"
 SITESUBTITLE = "Witness the stream of my thoughts being compiled into a text format."
-SITEURL = ''
+SITEURL = 'https://eryktr.github.io'
 SITEMAP = {
     'format': 'xml',
     'priorities': {
