@@ -6,29 +6,22 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://eryktr.github.io/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/2022/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/2022/06/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://eryktr.github.io/2022/06/iee754.html</loc>
-<lastmod>2022-06-27T00:00:00+02:00</lastmod>
-<changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
@@ -40,7 +33,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://eryktr.github.io/2022/06/structuralpatternmatching.html</loc>
+<loc>https://eryktr.github.io/2022/06/representation-of-numbers-in-computer-memory-iee754.html</loc>
+<lastmod>2022-06-27T00:00:00+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://eryktr.github.io/2022/06/structural-pattern-matching-a-new-feature-in-python.html</loc>
 <lastmod>2022-06-19T00:00:00+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -48,27 +48,27 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://eryktr.github.io/2024/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/2024/01/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://eryktr.github.io/2024/01/integer-programming.html</loc>
+<loc>https://eryktr.github.io/2024/01/practical_application_of_integer_programming.html</loc>
 <lastmod>2024-01-27T00:00:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://eryktr.github.io/2024/01/testing-parallel-programs.html</loc>
+<loc>https://eryktr.github.io/2024/01/real_life_case_of_testing_parallel_and_nondeterministic_programs.html</loc>
 <lastmod>2024-01-24T00:00:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -76,42 +76,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://eryktr.github.io/archives.html</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/author/eryktr/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/authors.html</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/category/python/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/category/software-engineering/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/catgegories.html</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -125,77 +125,77 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://eryktr.github.io/tag/computer-science/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/math/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/modern-python/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/optimization/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/programming/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/pytest/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/python/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/software-engineering/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/testing/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tag/unit-tests/</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://eryktr.github.io/tags.html</loc>
-<lastmod>2024-01-30T18:52:37-00:00</lastmod>
+<lastmod>2024-01-30T21:39:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
