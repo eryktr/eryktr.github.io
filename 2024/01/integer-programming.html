@@ -1,86 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SRNCD0MTY0"></script>
-  <script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-SRNCD0MTY0"></script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-SRNCD0MTY0');
   </script>
-  
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-
-  <title>Designing an Optimal Diet Using Integer Programming</title>
-
-
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="referrer" content="origin" />
-  <meta name="generator" content="Pelican" />
-  <link href="/" rel="canonical" />
-
-  <!-- Feed -->
-
-  <link href="/theme/css/style.css" type="text/css" rel="stylesheet" />
-
-  <!-- Code highlight color scheme -->
-      <link href="/theme/css/code_blocks/tomorrow.css" rel="stylesheet">
-
-
-  <!-- Custom fonts -->
-  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/>
+<meta charset="utf-8" content="text/html" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Designing an Optimal Diet Using Integer Programming</title>
+<meta content="True" name="HandheldFriendly"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="origin" name="referrer"/>
+<meta content="Pelican" name="generator"/>
+<link href="https://eryktr.github.io/" rel="canonical"/>
+<!-- Feed -->
+<link href="https://eryktr.github.io/theme/css/style.css" rel="stylesheet" type="text/css"/>
+<!-- Code highlight color scheme -->
+<link href="https://eryktr.github.io/theme/css/code_blocks/tomorrow.css" rel="stylesheet"/>
+<!-- Custom fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,300" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css"/>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-
-  <link href="/2024/01/integer-programming.html" rel="canonical" />
-
-    <meta name="description" content="In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific...">
-
-    <meta name="author" content="eryktr">
-
-    <meta name="tags" content="software-engineering">
-    <meta name="tags" content="programming">
-    <meta name="tags" content="math">
-    <meta name="tags" content="computer-science">
-    <meta name="tags" content="optimization">
-
-
-
-
+<link href="https://eryktr.github.io/2024/01/integer-programming.html" rel="canonical"/>
+<meta content="In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific..." name="description"/>
+<meta content="eryktr" name="author"/>
+<meta content="software-engineering" name="tags"/>
+<meta content="programming" name="tags"/>
+<meta content="math" name="tags"/>
+<meta content="computer-science" name="tags"/>
+<meta content="optimization" name="tags"/>
 <!-- Open Graph -->
-<meta property="og:site_name" content="Let's Research Stuff"/>
-<meta property="og:title" content="Designing an Optimal Diet Using Integer Programming"/>
-<meta property="og:description" content="In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific..."/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="/2024/01/integer-programming.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2024-01-27 00:00:00+01:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="/author/eryktr">
-<meta property="article:section" content="Software Engineering"/>
-<meta property="article:tag" content="software-engineering"/>
-<meta property="article:tag" content="programming"/>
-<meta property="article:tag" content="math"/>
-<meta property="article:tag" content="computer-science"/>
-<meta property="article:tag" content="optimization"/>
-<meta property="og:image" content="/assets/images/main_cover.webp">
-
+<meta content="Let's Research Stuff" property="og:site_name">
+<meta content="Designing an Optimal Diet Using Integer Programming" property="og:title">
+<meta content="In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific..." property="og:description">
+<meta content="en_US" property="og:locale">
+<meta content="https://eryktr.github.io/2024/01/integer-programming.html" property="og:url">
+<meta content="article" property="og:type">
+<meta content="2024-01-27 00:00:00+01:00" property="article:published_time">
+<meta content="" property="article:modified_time"/>
+<meta content="https://eryktr.github.io/author/eryktr" property="article:author"/>
+<meta content="Software Engineering" property="article:section">
+<meta content="software-engineering" property="article:tag"/>
+<meta content="programming" property="article:tag"/>
+<meta content="math" property="article:tag"/>
+<meta content="computer-science" property="article:tag"/>
+<meta content="optimization" property="article:tag"/>
+<meta content="https://eryktr.github.io/assets/images/main_cover.webp" property="og:image"/>
 <!-- Twitter Card -->
-
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -92,65 +70,59 @@
   "author": {
     "@type": "Person",
     "name": "eryktr",
-    "url": "/author/eryktr"
+    "url": "https://eryktr.github.io/author/eryktr"
   },
-  "image": "/assets/images/main_cover.webp",
-  "url": "/2024/01/integer-programming.html",
+  "image": "https://eryktr.github.io/assets/images/main_cover.webp",
+  "url": "https://eryktr.github.io/2024/01/integer-programming.html",
   "description": "In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific..."
 }
 </script>
-</head>
+</meta></meta></meta></meta></meta></meta></meta></meta></link></meta><link href="https://eryktr.github.io/2024/01/integer-programming.html" rel="canonical"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Let's Research Stuff", "item": "https://eryktr.github.io"}, {"@type": "ListItem", "position": 2, "name": "2024", "item": "https://eryktr.github.io/2024"}, {"@type": "ListItem", "position": 3, "name": "01", "item": "https://eryktr.github.io/2024/01"}, {"@type": "ListItem", "position": 4, "name": "Integer programming", "item": "https://eryktr.github.io/2024/01/integer-programming.html"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "author": {"@type": "Person", "name": "eryktr"}, "publisher": {"@type": "Organization", "name": "Let's Research Stuff"}, "headline": "Designing an Optimal Diet Using Integer Programming", "about": "Software Engineering", "datePublished": "2024-01-27 00:00"}</script></head>
 <!-- TODO : Body class -->
 <body class="home-template">
-
 <nav id="menu">
-  <a class="close-button">Close</a>
-  <div class="nav-wrapper">
-    <p class="nav-label">Menu</p>
-    <ul>
-
-              <li role="presentation"><a href="/pages/about/">About</a></li>
-
-    </ul>
-  </div>
+<a class="close-button">Close</a>
+<div class="nav-wrapper">
+<p class="nav-label">Menu</p>
+<ul>
+<li role="presentation"><a href="https://eryktr.github.io/pages/about/">About</a></li>
+</ul>
+</div>
 </nav>
-    <!-- Progressbar -->
-    <div class="progress-container">
-        <span class="progress-bar"></span>
-    </div>
-
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header id="post-header" class="has-cover">
-      <div class="inner">
-        <nav id="navigation">
-            <span id="home-button" class="nav-button">
-                <a class="home-button" href="/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
-            </span>
-          <span id="menu-button" class="nav-button">
-            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
-          </span>
-        </nav>
-        <h1 class="post-title">Designing an Optimal Diet Using Integer Programming</h1>
-        <!-- TODO : Proper class for headline -->
-        <span class="post-meta">
-                <a href="/author/eryktr">Eryk Trzeciakiewicz</a>
+<!-- Progressbar -->
+<div class="progress-container">
+<span class="progress-bar"></span>
+</div>
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="has-cover" id="post-header">
+<div class="inner">
+<nav id="navigation">
+<span class="nav-button" id="home-button">
+<a class="home-button" href="https://eryktr.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+</span>
+<span class="nav-button" id="menu-button">
+<a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+</span>
+</nav>
+<h1 class="post-title">Designing an Optimal Diet Using Integer Programming</h1>
+<!-- TODO : Proper class for headline -->
+<span class="post-meta">
+<a href="https://eryktr.github.io/author/eryktr">Eryk Trzeciakiewicz</a>
             | <time datetime="Sat 27 January 2024">Sat 27 January 2024</time>
-        </span>
-        <!-- TODO : Modified check -->
-            <div class="post-cover cover" style="background-image: url('/assets/images/main_cover.webp')">
-      </div>
-    </header>
-
-  <section id="wrapper">
-    <a class="hidden-close"></a>
-
-    <!-- Post content -->
-    <main class="content" role="main">
-        <article class="post">
-        <div class="inner">
-            <section class="post-content">
-                <h1>Introduction</h1>
+</span>
+<!-- TODO : Modified check -->
+<div class="post-cover cover" style="background-image: url('https://eryktr.github.io/assets/images/main_cover.webp')">
+</div>
+</div></header>
+<section id="wrapper">
+<a class="hidden-close"></a>
+<!-- Post content -->
+<main class="content" role="main">
+<article class="post">
+<div class="inner">
+<section class="post-content">
+<h1>Introduction</h1>
 <p>There are a variety of tools applicable for solving optimization problems. As a first post in the series, I will focus on integer programming.
 In this article, I will introduce the concept of integer programming and apply it to a practical problem of optimizing diet cost. I will build the mathematical model and solve it using the GLPK solver.</p>
 <h1>Integer Programming</h1>
@@ -321,15 +293,14 @@ To do this, I'll use the <code>pulp</code> library for Python. However, this art
 into too much detail.</p>
 <div class="highlight"><pre><span></span><code>pip install pulp
 </code></pre></div>
-
 <p>Then, let's reframe our problem in a script</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pulp</span> <span class="kn">import</span> <span class="n">LpVariable</span><span class="p">,</span> <span class="n">LpProblem</span>
 
-<span class="n">prob</span> <span class="o">=</span> <span class="n">LpProblem</span><span class="p">(</span><span class="s2">&quot;Optimizing diet cost&quot;</span><span class="p">)</span>
-<span class="n">Nr</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">&quot;Nr&quot;</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">&#39;Integer&#39;</span><span class="p">)</span>
-<span class="n">Nc</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">&quot;Nc&quot;</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">&#39;Integer&#39;</span><span class="p">)</span>
-<span class="n">Nal</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">&quot;Nal&quot;</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">&#39;Integer&#39;</span><span class="p">)</span>
-<span class="n">Nav</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">&quot;Nav&quot;</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">&#39;Integer&#39;</span><span class="p">)</span>
+<span class="n">prob</span> <span class="o">=</span> <span class="n">LpProblem</span><span class="p">(</span><span class="s2">"Optimizing diet cost"</span><span class="p">)</span>
+<span class="n">Nr</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">"Nr"</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">'Integer'</span><span class="p">)</span>
+<span class="n">Nc</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">"Nc"</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">'Integer'</span><span class="p">)</span>
+<span class="n">Nal</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">"Nal"</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">'Integer'</span><span class="p">)</span>
+<span class="n">Nav</span> <span class="o">=</span> <span class="n">LpVariable</span><span class="p">(</span><span class="s2">"Nav"</span><span class="p">,</span> <span class="n">lowBound</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upBound</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s1">'Integer'</span><span class="p">)</span>
 
 <span class="c1"># Minimize total diet cost</span>
 <span class="n">prob</span> <span class="o">+=</span> <span class="n">Nr</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">Nc</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">Nal</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">Nav</span> <span class="o">*</span> <span class="mi">4</span>
@@ -348,9 +319,8 @@ into too much detail.</p>
 
 <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">prob</span><span class="o">.</span><span class="n">variables</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">varValue</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">varValue</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </code></pre></div>
-
 <p>Let's run the script and get the solution</p>
 <div class="highlight"><pre><span></span><code><span class="nb">Result</span> <span class="o">-</span> <span class="nv">Optimal</span> <span class="nv">solution</span> <span class="nv">found</span>
 
@@ -368,7 +338,6 @@ into too much detail.</p>
 <span class="nv">Nc</span><span class="o">=</span><span class="mi">2</span>.<span class="mi">0</span>
 <span class="nv">Nr</span><span class="o">=</span><span class="mi">4</span>.<span class="mi">0</span>
 </code></pre></div>
-
 <p>As you can see, the program worked blazingly fast. Optimal solution was found in <code>0.01</code> seconds. The optimal cost is <code>30</code> and can be achieved by eating <code>4</code> avocados, <code>2</code> chicken breasts and <code>4</code> bags of rice, for the total of <code>2572</code> calories.</p>
 <h2>Conclusion</h2>
 <p>Linear and Integer programming can be used to solve optimization problems. This article focused on practical aspects. I will describe the theory and algorithms in play in a different article.</p>
@@ -434,67 +403,53 @@ into too much detail.</p>
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>
-            </section>
-
-            <section class="post-info">
-                <div class="post-share">
-                    <a class="twitter" href="https://twitter.com/share?text=Designing an Optimal Diet Using Integer Programming&amp;url=/2024/01/integer-programming.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
-                    </a>
-                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=/2024/01/integer-programming.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
-                    </a>
-                    <div class="clear"></div>
-                </div>
-
-                <aside class="post-tags">
-<a href="/tag/software-engineering">software-engineering</a><a href="/tag/programming">programming</a><a href="/tag/math">math</a><a href="/tag/computer-science">computer-science</a><a href="/tag/optimization">optimization</a>                </aside>
-
-                <div class="clear"></div>
-
-                <aside class="post-author">
-
-
-                        <figure class="post-author-avatar">
-                            <img src="/assets/images/avatar.webp" alt="Eryk Trzeciakiewicz" />
-                        </figure>
-                    <div class="post-author-bio">
-                        <h4 class="post-author-name"><a href="/author/eryktr">Eryk Trzeciakiewicz</a></h4>
-                            <p class="post-author-about">Pushing code at work and my limits thereafter. Currently chasing latest technologies, learning European languages and working out.</p>
-                            <span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
-                        <!-- Social linkes in alphabet order. -->
-                            <span class="post-author-github"><a target="_blank" href="https://github.com/eryktr"><i class="ic ic-link"></i> GitHub</a></span>
-                            <span class="post-author-linkedin"><a target="_blank" href="https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/"><i class="ic ic-link"></i> LinkedIn</a></span>
-                    </div>
-                    <div class="clear"></div>
-                </aside>
-
-                </section>
-
-
-                <aside class="post-nav">
-                    <a class="post-nav-prev" href="/2024/01/testing-parallel-programs.html">
-                        <section class="post-nav-teaser">
-                            <i class="ic ic-arrow-right"></i>
-                                <h2 class="post-nav-title">Testing parallel, non-deterministic code</h2>
-                            <p class="post-nav-excerpt">Hands-on practice on testing multiple processes. Also, a refresher on Calculus :)</p>
-                        </section>
-                    </a>
-                    <div class="clear"></div>
-                </aside>
-
-            </div>
-        </article>
-    </main>
-      <!-- TODO : Body class -->
-    <div id="body-class" style="display: none;" class=""></div>
-
-    <footer id="footer">
-    </footer>
-  </section>
-
-  <script type="text/javascript" src="/theme/js/script.js"></script>
-
-
+</section>
+<section class="post-info">
+<div class="post-share">
+<a class="twitter" href="https://twitter.com/share?text=Designing an Optimal Diet Using Integer Programming&amp;url=https://eryktr.github.io/2024/01/integer-programming.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+</a>
+<a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://eryktr.github.io/2024/01/integer-programming.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+</a>
+<div class="clear"></div>
+</div>
+<aside class="post-tags">
+<a href="https://eryktr.github.io/tag/software-engineering">software-engineering</a><a href="https://eryktr.github.io/tag/programming">programming</a><a href="https://eryktr.github.io/tag/math">math</a><a href="https://eryktr.github.io/tag/computer-science">computer-science</a><a href="https://eryktr.github.io/tag/optimization">optimization</a> </aside>
+<div class="clear"></div>
+<aside class="post-author">
+<figure class="post-author-avatar">
+<img alt="Eryk Trzeciakiewicz" src="https://eryktr.github.io/assets/images/avatar.webp"/>
+</figure>
+<div class="post-author-bio">
+<h4 class="post-author-name"><a href="https://eryktr.github.io/author/eryktr">Eryk Trzeciakiewicz</a></h4>
+<p class="post-author-about">Pushing code at work and my limits thereafter. Currently chasing latest technologies, learning European languages and working out.</p>
+<span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
+<!-- Social linkes in alphabet order. -->
+<span class="post-author-github"><a href="https://github.com/eryktr" target="_blank"><i class="ic ic-link"></i> GitHub</a></span>
+<span class="post-author-linkedin"><a href="https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/" target="_blank"><i class="ic ic-link"></i> LinkedIn</a></span>
+</div>
+<div class="clear"></div>
+</aside>
+</section>
+<aside class="post-nav">
+<a class="post-nav-prev" href="https://eryktr.github.io/2024/01/testing-parallel-programs.html">
+<section class="post-nav-teaser">
+<i class="ic ic-arrow-right"></i>
+<h2 class="post-nav-title">Testing parallel, non-deterministic code</h2>
+<p class="post-nav-excerpt">Hands-on practice on testing multiple processes. Also, a refresher on Calculus :)</p>
+</section>
+</a>
+<div class="clear"></div>
+</aside>
+</div>
+</article>
+</main>
+<!-- TODO : Body class -->
+<div class="" id="body-class" style="display: none;"></div>
+<footer id="footer">
+</footer>
+</section>
+<script src="https://eryktr.github.io/theme/js/script.js" type="text/javascript"></script>
 </body>
 </html>

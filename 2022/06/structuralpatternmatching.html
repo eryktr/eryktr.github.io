@@ -1,80 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SRNCD0MTY0"></script>
-  <script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-SRNCD0MTY0"></script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-SRNCD0MTY0');
   </script>
-  
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-
-  <title>Modern Python - Structural Pattern Matching</title>
-
-
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="referrer" content="origin" />
-  <meta name="generator" content="Pelican" />
-  <link href="/" rel="canonical" />
-
-  <!-- Feed -->
-
-  <link href="/theme/css/style.css" type="text/css" rel="stylesheet" />
-
-  <!-- Code highlight color scheme -->
-      <link href="/theme/css/code_blocks/tomorrow.css" rel="stylesheet">
-
-
-  <!-- Custom fonts -->
-  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
+<meta charset="utf-8"/>
+<meta charset="utf-8" content="text/html" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Modern Python - Structural Pattern Matching</title>
+<meta content="True" name="HandheldFriendly"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="origin" name="referrer"/>
+<meta content="Pelican" name="generator"/>
+<link href="https://eryktr.github.io/" rel="canonical"/>
+<!-- Feed -->
+<link href="https://eryktr.github.io/theme/css/style.css" rel="stylesheet" type="text/css"/>
+<!-- Code highlight color scheme -->
+<link href="https://eryktr.github.io/theme/css/code_blocks/tomorrow.css" rel="stylesheet"/>
+<!-- Custom fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,300" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css"/>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-
-  <link href="/2022/06/structuralpatternmatching.html" rel="canonical" />
-
-    <meta name="description" content="Bored of mundane if-else statements and sanity checks against your data format? The advent of Python 3.10 brought a tool allowing one to...">
-
-    <meta name="author" content="eryktr">
-
-    <meta name="tags" content="python">
-    <meta name="tags" content="modern-python">
-
-
-
-
+<link href="https://eryktr.github.io/2022/06/structuralpatternmatching.html" rel="canonical"/>
+<meta content="Bored of mundane if-else statements and sanity checks against your data format? The advent of Python 3.10 brought a tool allowing one to..." name="description"/>
+<meta content="eryktr" name="author"/>
+<meta content="python" name="tags"/>
+<meta content="modern-python" name="tags"/>
 <!-- Open Graph -->
-<meta property="og:site_name" content="Let's Research Stuff"/>
-<meta property="og:title" content="Modern Python - Structural Pattern Matching"/>
-<meta property="og:description" content="Bored of mundane if-else statements and sanity checks against your data format? The advent of Python 3.10 brought a tool allowing one to..."/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="/2022/06/structuralpatternmatching.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2022-06-19 00:00:00+02:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="/author/eryktr">
-<meta property="article:section" content="Python"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="modern-python"/>
-<meta property="og:image" content="/assets/images/main_cover.webp">
-
+<meta content="Let's Research Stuff" property="og:site_name">
+<meta content="Modern Python - Structural Pattern Matching" property="og:title">
+<meta content="Bored of mundane if-else statements and sanity checks against your data format? The advent of Python 3.10 brought a tool allowing one to..." property="og:description">
+<meta content="en_US" property="og:locale">
+<meta content="https://eryktr.github.io/2022/06/structuralpatternmatching.html" property="og:url"/>
+<meta content="article" property="og:type"/>
+<meta content="2022-06-19 00:00:00+02:00" property="article:published_time"/>
+<meta content="" property="article:modified_time"/>
+<meta content="https://eryktr.github.io/author/eryktr" property="article:author"/>
+<meta content="Python" property="article:section">
+<meta content="python" property="article:tag"/>
+<meta content="modern-python" property="article:tag"/>
+<meta content="https://eryktr.github.io/assets/images/main_cover.webp" property="og:image"/>
 <!-- Twitter Card -->
-
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -86,65 +64,59 @@
   "author": {
     "@type": "Person",
     "name": "eryktr",
-    "url": "/author/eryktr"
+    "url": "https://eryktr.github.io/author/eryktr"
   },
-  "image": "/assets/images/main_cover.webp",
-  "url": "/2022/06/structuralpatternmatching.html",
+  "image": "https://eryktr.github.io/assets/images/main_cover.webp",
+  "url": "https://eryktr.github.io/2022/06/structuralpatternmatching.html",
   "description": "Bored of mundane if-else statements and sanity checks against your data format? The advent of Python 3.10 brought a tool allowing one to..."
 }
 </script>
-</head>
+</meta></meta></meta></meta></meta></link></meta><link href="https://eryktr.github.io/2022/06/structuralpatternmatching.html" rel="canonical"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Let's Research Stuff", "item": "https://eryktr.github.io"}, {"@type": "ListItem", "position": 2, "name": "2022", "item": "https://eryktr.github.io/2022"}, {"@type": "ListItem", "position": 3, "name": "06", "item": "https://eryktr.github.io/2022/06"}, {"@type": "ListItem", "position": 4, "name": "Structuralpatternmatching", "item": "https://eryktr.github.io/2022/06/structuralpatternmatching.html"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "author": {"@type": "Person", "name": "eryktr"}, "publisher": {"@type": "Organization", "name": "Let's Research Stuff"}, "headline": "Modern Python - Structural Pattern Matching", "about": "Python", "datePublished": "2022-06-19 00:00"}</script></head>
 <!-- TODO : Body class -->
 <body class="home-template">
-
 <nav id="menu">
-  <a class="close-button">Close</a>
-  <div class="nav-wrapper">
-    <p class="nav-label">Menu</p>
-    <ul>
-
-              <li role="presentation"><a href="/pages/about/">About</a></li>
-
-    </ul>
-  </div>
+<a class="close-button">Close</a>
+<div class="nav-wrapper">
+<p class="nav-label">Menu</p>
+<ul>
+<li role="presentation"><a href="https://eryktr.github.io/pages/about/">About</a></li>
+</ul>
+</div>
 </nav>
-    <!-- Progressbar -->
-    <div class="progress-container">
-        <span class="progress-bar"></span>
-    </div>
-
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header id="post-header" class="has-cover">
-      <div class="inner">
-        <nav id="navigation">
-            <span id="home-button" class="nav-button">
-                <a class="home-button" href="/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
-            </span>
-          <span id="menu-button" class="nav-button">
-            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
-          </span>
-        </nav>
-        <h1 class="post-title">Modern Python - Structural Pattern Matching</h1>
-        <!-- TODO : Proper class for headline -->
-        <span class="post-meta">
-                <a href="/author/eryktr">Eryk Trzeciakiewicz</a>
+<!-- Progressbar -->
+<div class="progress-container">
+<span class="progress-bar"></span>
+</div>
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="has-cover" id="post-header">
+<div class="inner">
+<nav id="navigation">
+<span class="nav-button" id="home-button">
+<a class="home-button" href="https://eryktr.github.io/" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+</span>
+<span class="nav-button" id="menu-button">
+<a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+</span>
+</nav>
+<h1 class="post-title">Modern Python - Structural Pattern Matching</h1>
+<!-- TODO : Proper class for headline -->
+<span class="post-meta">
+<a href="https://eryktr.github.io/author/eryktr">Eryk Trzeciakiewicz</a>
             | <time datetime="Sun 19 June 2022">Sun 19 June 2022</time>
-        </span>
-        <!-- TODO : Modified check -->
-            <div class="post-cover cover" style="background-image: url('/assets/images/main_cover.webp')">
-      </div>
-    </header>
-
-  <section id="wrapper">
-    <a class="hidden-close"></a>
-
-    <!-- Post content -->
-    <main class="content" role="main">
-        <article class="post">
-        <div class="inner">
-            <section class="post-content">
-                <h1>Introduction</h1>
+</span>
+<!-- TODO : Modified check -->
+<div class="post-cover cover" style="background-image: url('https://eryktr.github.io/assets/images/main_cover.webp')">
+</div>
+</div></header>
+<section id="wrapper">
+<a class="hidden-close"></a>
+<!-- Post content -->
+<main class="content" role="main">
+<article class="post">
+<div class="inner">
+<section class="post-content">
+<h1>Introduction</h1>
 <p><a href="https://peps.python.org/pep-0634/">Structural Pattern Matching</a> is a relatively new feature, introduced with Python 3.10.
 For those of you who programmed in languages like C or Java, the new feature resembles the <strong>switch</strong> statement,
 yet it is more powerful and flexible.</p>
@@ -158,14 +130,12 @@ yet it is more powerful and flexible.</p>
     <span class="k">case</span> <span class="n">condition_N</span><span class="p">:</span>
         <span class="c1"># do something yet else</span>
 </code></pre></div>
-
 <p>Let's take a look at a simple example.</p>
 <h2>Commandline tool</h2>
 <p>Let's create a simple program which calculates the frequency of used characters in a piece of text.
 For example, for the text</p>
 <div class="highlight"><pre><span></span><code>one, two, three
 </code></pre></div>
-
 <p>The output should be</p>
 <div class="highlight"><pre><span></span><code><span class="n">e</span><span class="o">:</span><span class="w"> </span><span class="mf">0.2317</span><span class="w"></span>
 <span class="n">o</span><span class="o">:</span><span class="w"> </span><span class="mf">0.1548</span><span class="w"></span>
@@ -176,20 +146,17 @@ For example, for the text</p>
 <span class="n">h</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0779</span><span class="w"></span>
 <span class="n">r</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0779</span><span class="w"></span>
 </code></pre></div>
-
 <p>The program can be started in two ways:</p>
 <ol>
 <li>
 <p>With free text</p>
 <div class="highlight"><pre><span></span><code>freqcount [the text to analyze goes here]
 </code></pre></div>
-
 </li>
 <li>
 <p>With a file flag</p>
 <div class="highlight"><pre><span></span><code>freqcount -f [path/to/file]
 </code></pre></div>
-
 </li>
 </ol>
 <p>Here's the code:</p>
@@ -202,9 +169,9 @@ For example, for the text</p>
 
 
 <span class="k">def</span> <span class="nf">freqcount</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrequencyByChar</span><span class="p">:</span>
-    <span class="c1"># Here, a &#39;word&#39; denotes a contiguous piece of text. For example: &#39;one,&#39; (with the comma)</span>
+    <span class="c1"># Here, a 'word' denotes a contiguous piece of text. For example: 'one,' (with the comma)</span>
     <span class="c1"># is treated as one word.</span>
-    <span class="n">text_without_whitespace</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">text_without_whitespace</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
     <span class="n">num_chars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_without_whitespace</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="n">char</span><span class="p">:</span> <span class="n">num_occurences</span> <span class="o">/</span> <span class="n">num_chars</span>
@@ -214,19 +181,19 @@ For example, for the text</p>
 
 
 <span class="k">def</span> <span class="nf">output_result</span><span class="p">(</span><span class="n">freqs</span><span class="p">:</span> <span class="n">FrequencyByChar</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">"""</span>
 <span class="sd">    We need to sort the output by frequency before printing.</span>
 <span class="sd">    A dictionary is an unorded data structure.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">sorted_items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
         <span class="n">freqs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
-        <span class="c1"># &quot;Items&quot; are tuples: (character, frequency)</span>
+        <span class="c1"># "Items" are tuples: (character, frequency)</span>
         <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
         <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
     <span class="k">for</span> <span class="n">char</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">sorted_items</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">freq</span><span class="si">:</span><span class="s1">.4</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">freq</span><span class="si">:</span><span class="s1">.4</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">report_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -237,23 +204,21 @@ For example, for the text</p>
 <span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># The first entry is always the name of the program</span>
     <span class="k">match</span> <span class="n">args</span><span class="p">:</span>
-        <span class="k">case</span> <span class="p">[</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">]:</span>
+        <span class="k">case</span> <span class="p">[</span><span class="s1">'-f'</span><span class="p">,</span> <span class="n">filename</span><span class="p">]:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="k">case</span> <span class="p">[</span><span class="o">*</span><span class="n">words</span><span class="p">]:</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>    
+            <span class="n">text</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>    
     <span class="n">report_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-
 <p>The interesting part happens in the <strong>main</strong> function.
 Instead of running a series of "if" statements to determine the length of the input,
 whether it starts with '-f' or to handle edge cases like </p>
 <div class="highlight"><pre><span></span><code>freqcount -f words to count here
 </code></pre></div>
-
 <p>In the example, the entire process of args-parsing is fully declarative and has no nested logic.
 Also, notice that the input array got 'decomposed' - in the first case, the filename given by user got 
 assigned to the 'filename' variable. In the second case - all entered words got stored inside the 'words'
@@ -266,13 +231,12 @@ You can use structural pattern matching on many different data types. Let me enu
 For example:</p>
 <div class="highlight"><pre><span></span><code><span class="k">match</span> <span class="n">status_code</span><span class="p">:</span>
     <span class="k">case</span> <span class="mi">400</span> <span class="o">|</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;bad&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'bad'</span><span class="p">)</span>
     <span class="k">case</span> <span class="mi">200</span> <span class="o">|</span> <span class="mi">201</span> <span class="o">|</span> <span class="mi">202</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ok&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">)</span>
     <span class="k">case</span> <span class="mi">500</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'error'</span><span class="p">)</span>
 </code></pre></div>
-
 <p>You can also assign the result of the conditional matching to a variable. 
 This will be presented in the next example.</p>
 <h2>Wildcard Pattern</h2>
@@ -281,19 +245,18 @@ This will be presented in the next example.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><span class="n">cmd</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
 <span class="k">match</span> <span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
-    <span class="k">case</span> <span class="p">[</span><span class="s1">&#39;quit&#39;</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;bye&#39;</span><span class="p">)</span>
-    <span class="c1"># &#39;as&#39; keyword causes the matched value to be stored in the &#39;direction&#39; variable.</span>
-    <span class="k">case</span> <span class="p">[</span><span class="s1">&#39;go&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;up&#39;</span> <span class="o">|</span> <span class="s1">&#39;down&#39;</span> <span class="o">|</span> <span class="s1">&#39;left&#39;</span> <span class="o">|</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">direction</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;going </span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="c1"># Here we added a &#39;guard&#39; (if expression), will only match strings from the list</span>
-    <span class="k">case</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)]</span> <span class="k">if</span> <span class="n">direction</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;going </span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="c1"># _ is the wildcard pattern - it will match anything that hasn&#39;t been matched yet.</span>
+    <span class="k">case</span> <span class="p">[</span><span class="s1">'quit'</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'bye'</span><span class="p">)</span>
+    <span class="c1"># 'as' keyword causes the matched value to be stored in the 'direction' variable.</span>
+    <span class="k">case</span> <span class="p">[</span><span class="s1">'go'</span><span class="p">,</span> <span class="p">(</span><span class="s1">'up'</span> <span class="o">|</span> <span class="s1">'down'</span> <span class="o">|</span> <span class="s1">'left'</span> <span class="o">|</span> <span class="s1">'right'</span><span class="p">)</span> <span class="k">as</span> <span class="n">direction</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'going </span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="c1"># Here we added a 'guard' (if expression), will only match strings from the list</span>
+    <span class="k">case</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)]</span> <span class="k">if</span> <span class="n">direction</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'up'</span><span class="p">,</span> <span class="s1">'down'</span><span class="p">,</span> <span class="s1">'left'</span><span class="p">,</span> <span class="s1">'right'</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'going </span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="c1"># _ is the wildcard pattern - it will match anything that hasn't been matched yet.</span>
     <span class="k">case</span> <span class="k">_</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I don&#39;t understand.&quot;</span><span class="p">)</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"I don't understand."</span><span class="p">)</span> 
 </code></pre></div>
-
 <h2>Classes</h2>
 <p>It is possible to match against classes. You can even match against certain attributes.</p>
 <p>Let's define a bunch of classes (dataclasses would work as well):</p>
@@ -312,63 +275,55 @@ This will be presented in the next example.</p>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
 </code></pre></div>
-
 <p>We can use those classes in <code>case</code> clauses. 
 Notice that the matching expression doesn't have to be a proper instance of the class.
 Cases like <code>Point(x=0)</code> denote <strong>any Point instance having x=0</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">match</span> <span class="n">shape</span><span class="p">:</span>
     <span class="k">case</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The origin&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'The origin'</span><span class="p">)</span>
     <span class="k">case</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;A point on the X axis&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'A point on the X axis'</span><span class="p">)</span>
     <span class="k">case</span> <span class="n">Point</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;A point on the Y axis&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'A point on the Y axis'</span><span class="p">)</span>
     <span class="k">case</span> <span class="n">Circle</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;A circle with radius </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'A circle with radius </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
     <span class="k">case</span> <span class="k">_</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Invalid data type.&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Invalid data type.'</span><span class="p">)</span>
 </code></pre></div>
-
 <h2>Dictionaries</h2>
 <p>You can also use dictionaries in 'case' clauses.
 <strong>It will match ALL dictionaries that meet all requirements</strong></p>
 <p>For example:</p>
-<div class="highlight"><pre><span></span><code><span class="k">case</span> <span class="p">{</span><span class="s1">&#39;firstname&#39;</span><span class="p">:</span> <span class="n">firstname</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">case</span> <span class="p">{</span><span class="s1">'firstname'</span><span class="p">:</span> <span class="n">firstname</span><span class="p">}</span>
 </code></pre></div>
-
 <p>will match all dictionaries having the key 'firstname'.</p>
-<div class="highlight"><pre><span></span><code><span class="k">case</span> <span class="p">{</span><span class="s1">&#39;firstname&#39;</span><span class="p">:</span> <span class="s1">&#39;Chris&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="n">age</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">case</span> <span class="p">{</span><span class="s1">'firstname'</span><span class="p">:</span> <span class="s1">'Chris'</span><span class="p">,</span> <span class="s1">'age'</span><span class="p">:</span> <span class="n">age</span><span class="p">}</span>
 </code></pre></div>
-
 <p>will match all dictionaries having the key 'firstname' assigned with the value of <em>Chris</em> AND 
 having the key <em>age</em>.</p>
 <p>In below example, 'person' can either be a list of two elements or a dictionary with keys: <em>firstname</em> and <em>lastname</em>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">match</span> <span class="n">person</span><span class="p">:</span>
     <span class="k">case</span> <span class="p">[</span><span class="n">firstname</span><span class="p">,</span> <span class="n">lastname</span><span class="p">]:</span>
         <span class="o">...</span>
-    <span class="k">case</span> <span class="p">{</span><span class="s1">&#39;firstname&#39;</span><span class="p">:</span> <span class="n">firstname</span><span class="p">,</span> <span class="s1">&#39;lastname&#39;</span><span class="p">:</span> <span class="n">lastname</span><span class="p">}:</span>
+    <span class="k">case</span> <span class="p">{</span><span class="s1">'firstname'</span><span class="p">:</span> <span class="n">firstname</span><span class="p">,</span> <span class="s1">'lastname'</span><span class="p">:</span> <span class="n">lastname</span><span class="p">}:</span>
         <span class="o">...</span>
 </code></pre></div>
-
 <h2>Built-in types</h2>
 <p>Finally, it is possible to add additional constraints on the primitive type of the matched data.
 For example, let's assume that our program parses a list of arguments to form a command. One possible command is:</p>
 <div class="highlight"><pre><span></span><code>sleep [number of seconds]
 </code></pre></div>
-
 <p>To automatically handle cases where <em>number of seconds</em> is a string instead of an integer, we can handle it as follows:</p>
 <div class="highlight"><pre><span></span><code><span class="k">match</span> <span class="n">command</span><span class="p">:</span>
-    <span class="k">case</span> <span class="p">[</span><span class="s1">&#39;sleep&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)]:</span>
+    <span class="k">case</span> <span class="p">[</span><span class="s1">'sleep'</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)]:</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="k">case</span> <span class="p">[</span><span class="s1">&#39;sleep&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)]:</span>
+    <span class="k">case</span> <span class="p">[</span><span class="s1">'sleep'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)]:</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 </code></pre></div>
-
 <p>This syntax might be difficult to understand at first. But let's break it down.
 The expression</p>
-<div class="highlight"><pre><span></span><code><span class="k">case</span> <span class="p">[</span><span class="s1">&#39;sleep&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span>
+<div class="highlight"><pre><span></span><code><span class="k">case</span> <span class="p">[</span><span class="s1">'sleep'</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span>
 </code></pre></div>
-
 <p>simply matches two-element lists, whose first element it the string literal <code>'sleep'</code> and the second element
 is an integer. In addition, the integer gets assigned to the variable <code>t</code>.</p>
 <h1>Practical application - Event Loop</h1>
@@ -388,9 +343,9 @@ for handling user events. Events that need to be handled include:</p>
     <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="n">get_event</span><span class="p">()</span>
         <span class="k">match</span> <span class="n">event</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">events</span><span class="o">.</span><span class="n">Click</span><span class="p">(</span><span class="n">button</span><span class="o">=</span><span class="s1">&#39;L&#39;</span><span class="p">):</span>
+            <span class="k">case</span> <span class="n">events</span><span class="o">.</span><span class="n">Click</span><span class="p">(</span><span class="n">button</span><span class="o">=</span><span class="s1">'L'</span><span class="p">):</span>
                 <span class="n">quick_attack</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">events</span><span class="o">.</span><span class="n">Click</span><span class="p">(</span><span class="n">button</span><span class="o">=</span><span class="s1">&#39;R&#39;</span><span class="p">):</span>
+            <span class="k">case</span> <span class="n">events</span><span class="o">.</span><span class="n">Click</span><span class="p">(</span><span class="n">button</span><span class="o">=</span><span class="s1">'R'</span><span class="p">):</span>
                 <span class="n">strong_attack</span><span class="p">()</span>
             <span class="k">case</span> <span class="n">events</span><span class="o">.</span><span class="n">Move</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="nb">dir</span><span class="p">):</span>
                 <span class="n">translate_character</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
@@ -399,79 +354,64 @@ for handling user events. Events that need to be handled include:</p>
             <span class="k">case</span> <span class="n">events</span><span class="o">.</span><span class="n">Quit</span><span class="p">:</span>
                 <span class="n">quit_game</span><span class="p">()</span>
 </code></pre></div>
-
 <h1>Summary</h1>
 <p>Structural Pattern Matching is still a new feature, and so is not common among different codebases.
 It does, nonetheless, yield tremendous benefits when it comes to code readability and compactness.
 Can you think of any other scenarios where SPM comes in handy and unwinds a complex chain of <code>if</code> statements?</p>
-            </section>
-
-            <section class="post-info">
-                <div class="post-share">
-                    <a class="twitter" href="https://twitter.com/share?text=Modern Python - Structural Pattern Matching&amp;url=/2022/06/structuralpatternmatching.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
-                    </a>
-                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=/2022/06/structuralpatternmatching.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
-                    </a>
-                    <div class="clear"></div>
-                </div>
-
-                <aside class="post-tags">
-<a href="/tag/python">python</a><a href="/tag/modern-python">modern-python</a>                </aside>
-
-                <div class="clear"></div>
-
-                <aside class="post-author">
-
-
-                        <figure class="post-author-avatar">
-                            <img src="/assets/images/avatar.webp" alt="Eryk Trzeciakiewicz" />
-                        </figure>
-                    <div class="post-author-bio">
-                        <h4 class="post-author-name"><a href="/author/eryktr">Eryk Trzeciakiewicz</a></h4>
-                            <p class="post-author-about">Pushing code at work and my limits thereafter. Currently chasing latest technologies, learning European languages and working out.</p>
-                            <span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
-                        <!-- Social linkes in alphabet order. -->
-                            <span class="post-author-github"><a target="_blank" href="https://github.com/eryktr"><i class="ic ic-link"></i> GitHub</a></span>
-                            <span class="post-author-linkedin"><a target="_blank" href="https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/"><i class="ic ic-link"></i> LinkedIn</a></span>
-                    </div>
-                    <div class="clear"></div>
-                </aside>
-
-                </section>
-
-
-                <aside class="post-nav">
-                    <a class="post-nav-next" href="/2022/06/iee754.html">
-                        <section class="post-nav-teaser">
-                            <i class="ic ic-arrow-left"></i>
-                                <h2 class="post-nav-title">Integers and floating point numbers in memory - definitive intermediate guide</h2>
-                            <p class="post-nav-excerpt">Have you ever wondered how a floating point number like 3.14159 is internally stored...</p>
-                        </section>
-                    </a>
-                    <a class="post-nav-prev" href="/2022/06/monkeypatching.html">
-                        <section class="post-nav-teaser">
-                            <i class="ic ic-arrow-right"></i>
-                                <h2 class="post-nav-title">Deterministic tests - introduction to monkeypatching</h2>
-                            <p class="post-nav-excerpt">Some parts of your code are hard to test - API calls, randomized or long-running...</p>
-                        </section>
-                    </a>
-                    <div class="clear"></div>
-                </aside>
-
-            </div>
-        </article>
-    </main>
-      <!-- TODO : Body class -->
-    <div id="body-class" style="display: none;" class=""></div>
-
-    <footer id="footer">
-    </footer>
-  </section>
-
-  <script type="text/javascript" src="/theme/js/script.js"></script>
-
-
+</section>
+<section class="post-info">
+<div class="post-share">
+<a class="twitter" href="https://twitter.com/share?text=Modern Python - Structural Pattern Matching&amp;url=https://eryktr.github.io/2022/06/structuralpatternmatching.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+</a>
+<a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://eryktr.github.io/2022/06/structuralpatternmatching.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+</a>
+<div class="clear"></div>
+</div>
+<aside class="post-tags">
+<a href="https://eryktr.github.io/tag/python">python</a><a href="https://eryktr.github.io/tag/modern-python">modern-python</a> </aside>
+<div class="clear"></div>
+<aside class="post-author">
+<figure class="post-author-avatar">
+<img alt="Eryk Trzeciakiewicz" src="https://eryktr.github.io/assets/images/avatar.webp"/>
+</figure>
+<div class="post-author-bio">
+<h4 class="post-author-name"><a href="https://eryktr.github.io/author/eryktr">Eryk Trzeciakiewicz</a></h4>
+<p class="post-author-about">Pushing code at work and my limits thereafter. Currently chasing latest technologies, learning European languages and working out.</p>
+<span class="post-author-location"><i class="ic ic-location"></i> Poland</span>
+<!-- Social linkes in alphabet order. -->
+<span class="post-author-github"><a href="https://github.com/eryktr" target="_blank"><i class="ic ic-link"></i> GitHub</a></span>
+<span class="post-author-linkedin"><a href="https://www.linkedin.com/in/eryk-trzeciakiewicz-2a86a1182/" target="_blank"><i class="ic ic-link"></i> LinkedIn</a></span>
+</div>
+<div class="clear"></div>
+</aside>
+</section>
+<aside class="post-nav">
+<a class="post-nav-next" href="https://eryktr.github.io/2022/06/iee754.html">
+<section class="post-nav-teaser">
+<i class="ic ic-arrow-left"></i>
+<h2 class="post-nav-title">Integers and floating point numbers in memory - definitive intermediate guide</h2>
+<p class="post-nav-excerpt">Have you ever wondered how a floating point number like 3.14159 is internally stored...</p>
+</section>
+</a>
+<a class="post-nav-prev" href="https://eryktr.github.io/2022/06/monkeypatching.html">
+<section class="post-nav-teaser">
+<i class="ic ic-arrow-right"></i>
+<h2 class="post-nav-title">Deterministic tests - introduction to monkeypatching</h2>
+<p class="post-nav-excerpt">Some parts of your code are hard to test - API calls, randomized or long-running...</p>
+</section>
+</a>
+<div class="clear"></div>
+</aside>
+</div>
+</article>
+</main>
+<!-- TODO : Body class -->
+<div class="" id="body-class" style="display: none;"></div>
+<footer id="footer">
+</footer>
+</section>
+<script src="https://eryktr.github.io/theme/js/script.js" type="text/javascript"></script>
 </body>
 </html>
