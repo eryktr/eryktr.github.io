@@ -2,7 +2,7 @@ Title: Integers and floating point numbers in memory - definitive intermediate g
 Date: 06-27-2022
 Category: Software Engineering
 Tags: software-engineering, programming, math, computer-science
-Slug: iee754
+Slug: representation-of-numbers-in-computer-memory-iee754
 Author: eryktr
 Summary: Have you ever wondered how a floating point number like *3.14159* is internally stored in computer memory?
     This article explains the industry standard solution to this problem - the IEE754.

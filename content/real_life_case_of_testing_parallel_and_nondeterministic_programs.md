@@ -2,11 +2,13 @@ Title: Testing parallel, non-deterministic code
 Date: 01-24-2024
 Category: Python
 Tags: python, pytest, testing, software-engineering, programming, unit-tests
-Slug: testing-parallel-programs
+Slug: real_life_case_of_testing_parallel_and_nondeterministic_programs
 Author: eryktr
 Summary: Hands-on practice on testing multiple processes. Also, a refresher on Calculus :)
 
 # Introduction
+This is the next article from my testing series. The previous one introduced [monkeypatching]({filename}/monkeypatching.md) as
+a way to abstract away some complexity. This article will also use monkeypatching, to solve a more complex problem.
 Most developers are familiar with testing synchronous code. Techniques such as mocking and stubbing, as well as the 'pure-fabrication' principle (more on that coming later) make up a pretty robust framework for covering regular code. However, sometimes we have to deal with highly concurrent programs which are also non-deterministic. In this article, I will analyze and cover one such scenario.
 
 # Problem statement

@@ -2,7 +2,7 @@ Title: Designing an Optimal Diet Using Integer Programming
 Date: 01-27-2024
 Category: Software Engineering
 Tags: software-engineering, programming, math, computer-science, optimization
-Slug: integer-programming
+Slug: practical_application_of_integer_programming
 Author: eryktr
 Summary: In this article, I apply integer programming to tackle the Diet Optimization Problem, the challenge of cost-effectively meeting specific nutritional targets.
 

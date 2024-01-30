@@ -2,7 +2,7 @@ Title: Modern Python - Structural Pattern Matching
 Date: 06-19-2022
 Category: Python
 Tags: python, modern-python
-Slug: structuralpatternmatching
+Slug: structural-pattern-matching-a-new-feature-in-python
 Author: eryktr
 Summary: Bored of mundane if-else statements and sanity checks against your data format? The advent of Python 3.10 brought a tool allowing one to  solve such 
     problems elegantly, compactly and declaratively - Structural Pattern Matching.
